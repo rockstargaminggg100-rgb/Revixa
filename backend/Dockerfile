@@ -1,4 +1,7 @@
-FROM node:20-alpine
+FROM node:20-slim
+
+# Install OpenSSL for Prisma engine compatibility
+RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Working directory
 WORKDIR /app
@@ -10,7 +13,7 @@ RUN npm install
 # Copy application source code & Prisma schema
 COPY . .
 
-# Generate Prisma Client
+# Generate Prisma Client with native & debian binary targets
 RUN npx prisma generate
 
 # Expose backend port

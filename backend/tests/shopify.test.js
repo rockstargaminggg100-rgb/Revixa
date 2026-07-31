@@ -128,12 +128,12 @@ describe('Phase 2.4 — Shopify OAuth & Webhook Test Suite', () => {
       const connection = await ShopifyRepository.getConnection(orgId);
       expect(connection).not.toBeNull();
       expect(connection.accessToken).toBeDefined();
-      expect(connection.accessToken).not.toContain('test_mock_token_'); // Raw token must NOT appear in plaintext
+      expect(connection.accessToken).not.toContain('shpua_'); // Raw token must NOT appear in plaintext
       expect(connection.accessToken).toContain(':'); // Contains iv:authTag:ciphertext structure
 
       // Verify decryption works
       const decrypted = decryptToken(connection.accessToken);
-      expect(decrypted).toContain('test_mock_token_');
+      expect(decrypted).toContain('shpua_');
     });
   });
 
