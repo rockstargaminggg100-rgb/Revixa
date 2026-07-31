@@ -2,16 +2,19 @@
  * REVIXA BACKEND — SHOPIFY SERVICE LAYER
  * backend/src/services/shopifyService.js
  * 
- * Orchestration layer for Shopify OAuth 2.0 install, token exchange, webhook verification, and sync status.
- * Calls ShopifyRepository and AuditService ONLY.
- * NO Prisma imports.
+ * Main orchestration layer for Shopify OAuth 2.0 install, token exchange, webhooks, and sync engine.
+ * Calls StoreRepository, SyncService, WebhookService, AuditService, and NotificationRepository ONLY.
+ * NO Prisma imports directly.
  */
 
 import crypto from 'crypto';
 import { config } from '../config/env.js';
 import { encryptToken, decryptToken, verifyShopifyHmac } from '../utils/crypto.js';
-import { ShopifyRepository } from '../repositories/ShopifyRepository.js';
+import { StoreRepository } from '../repositories/StoreRepository.js';
+import { SyncService } from './shopify/syncService.js';
+import { WebhookService } from './shopify/webhookService.js';
 import { AuditService } from './auditService.js';
+import { NotificationRepository } from '../repositories/NotificationRepository.js';
 
 export class ShopifyService {
   /**
@@ -36,7 +39,7 @@ export class ShopifyService {
     const stateNonce = crypto.randomBytes(16).toString('hex');
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minute expiry
 
-    await ShopifyRepository.saveOAuthState(stateNonce, orgId, expiresAt);
+    await StoreRepository.saveOAuthState(stateNonce, orgId, expiresAt);
 
     const redirectUri = encodeURIComponent(config.shopify.redirectUri);
     const scope = encodeURIComponent(config.shopify.scopes);
@@ -60,7 +63,7 @@ export class ShopifyService {
     }
 
     // 2. Verify state nonce
-    const stateEntry = await ShopifyRepository.verifyAndConsumeOAuthState(state);
+    const stateEntry = await StoreRepository.verifyAndConsumeOAuthState(state);
     if (!stateEntry) {
       const error = new Error('State CSRF mismatch or expired OAuth session');
       error.statusCode = 400;
@@ -101,12 +104,22 @@ export class ShopifyService {
     // 5. Encrypt access token (AES-256-GCM)
     const encryptedToken = encryptToken(rawAccessToken);
 
-    // 6. Save connection via ShopifyRepository
+    // 6. Save connection via StoreRepository
     const orgId = stateEntry.orgId || 'org_default';
-    const store = await ShopifyRepository.saveConnection(orgId, shop, encryptedToken);
+    const store = await StoreRepository.saveConnection(orgId, shop, encryptedToken);
 
-    // 7. Audit log event
+    // 7. Audit log event & Notification
     await AuditService.recordEvent(null, 'SHOPIFY_CONNECTED', `Shopify store connected: ${shop}`, 'setting');
+    await NotificationRepository.createNotification(null, 'SETTING', `Shopify store successfully connected: ${shop}`);
+
+    // 8. Automatically trigger initial sync job
+    if (process.env.NODE_ENV === 'test') {
+      await SyncService.startSyncJob(orgId, shop);
+    } else {
+      SyncService.startSyncJob(orgId, shop).catch(err => {
+        console.warn('[ShopifyService] Auto sync start warning:', err.message);
+      });
+    }
 
     return {
       storeId: store.id,
@@ -117,74 +130,42 @@ export class ShopifyService {
   }
 
   /**
-   * Handle app/uninstalled webhook
+   * Handle App Uninstalled Webhook
    */
   static async handleAppUninstalled(shopDomain, rawHmac, rawBody) {
-    const isValid = verifyShopifyHmac(
-      { hmacHeader: rawHmac, rawBody },
-      config.shopify.apiSecret,
-      true
-    );
-
-    if (!isValid) {
-      const error = new Error('Invalid webhook HMAC signature');
-      error.statusCode = 401;
-      throw error;
-    }
-
-    await ShopifyRepository.markInactive(shopDomain);
-    await AuditService.recordEvent(null, 'SHOPIFY_UNINSTALLED', `Shopify app uninstalled: ${shopDomain}`, 'alert');
-
-    return { status: 'disconnected' };
+    return await WebhookService.processWebhook('app/uninstalled', shopDomain, rawHmac, rawBody, { shop_domain: shopDomain });
   }
 
   /**
-   * Handle order webhooks (orders/create, orders/updated)
+   * Handle Generic Order / Product / Inventory Webhook
    */
   static async handleOrderWebhook(topic, shopDomain, rawHmac, rawBody, orderPayload) {
-    const isValid = verifyShopifyHmac(
-      { hmacHeader: rawHmac, rawBody },
-      config.shopify.apiSecret,
-      true
-    );
-
-    if (!isValid) {
-      const error = new Error('Invalid webhook HMAC signature');
-      error.statusCode = 401;
-      throw error;
-    }
-
-    const orderNumber = orderPayload.order_number || orderPayload.id || 'ORDER_1001';
-    await AuditService.recordEvent(null, `SHOPIFY_${topic.toUpperCase().replace('/', '_')}`, `Order ${topic}: #${orderNumber} from ${shopDomain}`, 'sync');
-
-    return {
-      topic,
-      processed: true,
-      orderNumber
-    };
+    return await WebhookService.processWebhook(topic, shopDomain, rawHmac, rawBody, orderPayload);
   }
 
   /**
-   * Get real store sync status endpoint (/api/v1/shopify/sync-status)
+   * Get Real Store Sync Status
    */
   static async getSyncStatus(orgId = 'org_default') {
-    const store = await ShopifyRepository.getConnection(orgId);
+    const store = await StoreRepository.getConnection(orgId);
     const isConnected = store && store.status === 'connected';
+    const syncData = SyncService.getSyncStatus(orgId);
 
     return {
       connected: isConnected,
       store: store ? store.myshopifyDomain : null,
-      progress: isConnected ? 100 : 0,
-      tasks: [
-        { id: 'task1', name: 'Connecting Store', status: isConnected ? 'done' : 'processing' },
-        { id: 'task2', name: 'Importing Products', status: isConnected ? 'done' : 'pending' },
-        { id: 'task3', name: 'Importing Orders', status: isConnected ? 'done' : 'pending' },
-        { id: 'task4', name: 'Importing Customers', status: isConnected ? 'done' : 'pending' },
-        { id: 'task5', name: 'Importing Marketing Signals', status: isConnected ? 'done' : 'pending' },
-        { id: 'task6', name: 'Analyzing Revenue Drivers', status: isConnected ? 'done' : 'pending' },
-        { id: 'task7', name: 'Generating AI Insights', status: isConnected ? 'done' : 'pending' },
-        { id: 'task8', name: 'Building Forecast Model', status: isConnected ? 'done' : 'pending' }
-      ]
+      state: syncData.state,
+      progress: syncData.progress,
+      tasks: syncData.tasks
     };
+  }
+
+  /**
+   * Start Manual / API Sync Trigger
+   */
+  static async startSync(orgId = 'org_default', shopDomain) {
+    const store = await StoreRepository.getConnection(orgId);
+    const targetShop = shopDomain || (store ? store.myshopifyDomain : 'elegance-paris.myshopify.com');
+    return await SyncService.startSyncJob(orgId, targetShop);
   }
 }

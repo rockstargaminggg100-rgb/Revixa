@@ -9,10 +9,14 @@ import helmet from 'helmet';
 import { config } from './config/env.js';
 import authRoutes from './routes/authRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
+import shopifyRoutes from './routes/shopifyRoutes.js';
 import {
   webhookAppUninstalled,
   webhookOrdersCreate,
-  webhookOrdersUpdated
+  webhookOrdersUpdated,
+  webhookProductsUpdate,
+  webhookInventoryLevelsUpdate,
+  webhookCustomersCreate
 } from './controllers/shopifyController.js';
 import { errorHandler } from './middleware/error.js';
 
@@ -40,11 +44,15 @@ app.use(express.json());
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api/v1', apiRoutes);
+app.use('/shopify', shopifyRoutes);
 
 // Webhook Routes
 app.post('/webhooks/shopify/app/uninstalled', webhookAppUninstalled);
 app.post('/webhooks/shopify/orders/create', webhookOrdersCreate);
 app.post('/webhooks/shopify/orders/updated', webhookOrdersUpdated);
+app.post('/webhooks/shopify/products/update', webhookProductsUpdate);
+app.post('/webhooks/shopify/inventory_levels/update', webhookInventoryLevelsUpdate);
+app.post('/webhooks/shopify/customers/create', webhookCustomersCreate);
 
 // Root health check
 app.get('/health', (req, res) => {
