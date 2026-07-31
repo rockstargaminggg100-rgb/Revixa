@@ -10,6 +10,7 @@ import { config } from './config/env.js';
 import authRoutes from './routes/authRoutes.js';
 import apiRoutes from './routes/apiRoutes.js';
 import shopifyRoutes from './routes/shopifyRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 import {
   webhookAppUninstalled,
   webhookOrdersCreate,
@@ -44,6 +45,7 @@ app.use(express.json());
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api/v1', apiRoutes);
+app.use('/api/v1/ai', aiRoutes);
 app.use('/shopify', shopifyRoutes);
 
 // Webhook Routes
@@ -76,6 +78,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`   Health Check: http://localhost:${PORT}/health`);
     console.log(`   Auth Endpoint: http://localhost:${PORT}/auth/login`);
     console.log(`   Shopify OAuth: http://localhost:${PORT}/auth/shopify/install`);
+    console.log(`   AI Endpoints:  http://localhost:${PORT}/api/v1/ai/summary`);
     console.log(`==================================================`);
   });
 }
