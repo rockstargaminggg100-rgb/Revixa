@@ -27,10 +27,10 @@ const app = express();
 app.use(helmet());
 
 // CORS Configuration with Explicit Allowlist
-const allowedOrigins = config.frontendUrl.split(',').map(url => url.trim());
+const allowedOrigins = config.frontendUrl ? config.frontendUrl.split(',').map(url => url.trim()) : ['https://f-seven-orcin.vercel.app'];
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
       return callback(null, true);
     }
     return callback(new Error(`CORS origin policy restriction: ${origin} not allowed.`));
@@ -62,6 +62,12 @@ app.get('/health', (req, res) => {
     status: 'ok',
     service: 'Revixa API Backend',
     version: '1.0.0',
+    environment: config.nodeEnv,
+    shopify: {
+      apiKeyPrefix: config.shopify.apiKey ? `${config.shopify.apiKey.substring(0, 8)}...` : 'NOT_SET',
+      redirectUri: config.shopify.redirectUri,
+      apiVersion: config.shopify.apiVersion
+    },
     timestamp: new Date().toISOString()
   });
 });
@@ -73,12 +79,15 @@ app.use(errorHandler);
 const PORT = config.port;
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
+    const keyPrefix = config.shopify.apiKey ? `${config.shopify.apiKey.substring(0, 8)}...` : 'NOT_SET';
     console.log(`==================================================`);
     console.log(`⚡ REVIXA BACKEND API SERVER RUNNING ON PORT ${PORT}`);
-    console.log(`   Health Check: http://localhost:${PORT}/health`);
-    console.log(`   Auth Endpoint: http://localhost:${PORT}/auth/login`);
-    console.log(`   Shopify OAuth: http://localhost:${PORT}/auth/shopify/install`);
-    console.log(`   AI Endpoints:  http://localhost:${PORT}/api/v1/ai/summary`);
+    console.log(`   Environment:   ${config.nodeEnv.toUpperCase()}`);
+    console.log(`   Health Check:  http://localhost:${PORT}/health`);
+    console.log(`   Shopify Key:   ${keyPrefix}`);
+    console.log(`   Redirect URI:  ${config.shopify.redirectUri}`);
+    console.log(`   Scopes:        ${config.shopify.scopes}`);
+    console.log(`   API Version:   ${config.shopify.apiVersion}`);
     console.log(`==================================================`);
   });
 }
