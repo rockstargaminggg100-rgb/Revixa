@@ -1,14 +1,12 @@
 /**
  * REVIXA BACKEND — CUSTOMER SERVICE LAYER
  * backend/src/services/customerService.js
- * 
- * Business logic layer. Calls CustomersRepository ONLY.
  */
 
-import { CustomersRepository } from '../repositories/CustomersRepository.js';
+import { CustomerAnalyticsService } from './analytics/customerAnalyticsService.js';
 
 export class CustomerService {
-  static async getCustomerData(storyId = 'story_001') {
-    return await CustomersRepository.findCustomers(storyId);
+  static async getCustomerData(storyId = 'story_001', orgId = 'org_default') {
+    return await CustomerAnalyticsService.calculateCustomerMetrics(orgId);
   }
 }
