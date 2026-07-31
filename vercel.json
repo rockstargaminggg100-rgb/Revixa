@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    { "src": "/onboarding", "dest": "/onboarding.html" },
+    { "src": "/dashboard", "dest": "/dashboard.html" },
+    { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
