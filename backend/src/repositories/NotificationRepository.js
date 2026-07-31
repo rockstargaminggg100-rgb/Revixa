@@ -28,4 +28,20 @@ export class NotificationRepository {
       { id: 2, type: 'insight', text: 'Meta Creative #12 CPA dropped 22%', time: '14m ago' }
     ];
   }
+
+  static async createNotification(userId, type, message) {
+    if (prisma && userId) {
+      try {
+        await prisma.notification.create({
+          data: {
+            userId,
+            type,
+            message
+          }
+        });
+      } catch (err) {
+        console.warn('[NotificationRepository] createNotification fallback:', err.message);
+      }
+    }
+  }
 }

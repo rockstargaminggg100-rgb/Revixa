@@ -71,6 +71,22 @@ export class UserRepository {
     return newUser;
   }
 
+  static async updateLastLogin(id) {
+    if (prisma) {
+      try {
+        await prisma.user.update({
+          where: { id },
+          data: { updatedAt: new Date() }
+        });
+      } catch (err) {
+        console.warn('[UserRepository] updateLastLogin query fallback:', err.message);
+      }
+    }
+    const user = fallbackUsers.find(u => u.id === id);
+    if (user) user.updatedAt = new Date();
+    return user;
+  }
+
   static async updateRole(id, role) {
     if (prisma) {
       try {

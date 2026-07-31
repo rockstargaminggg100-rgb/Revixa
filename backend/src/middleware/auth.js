@@ -8,14 +8,14 @@ import { config } from '../config/env.js';
 import { sendError } from '../utils/response.js';
 
 /**
- * Verify JWT token from Authorization header
+ * Verify JWT token from Authorization header (Bearer token)
  */
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return sendError(res, 'Access denied. No authentication token provided.', 401);
+    return sendError(res, 'Authentication required', 401);
   }
 
   try {
@@ -23,9 +23,14 @@ export const authenticateToken = (req, res, next) => {
     req.user = decoded; // Contains id, email, role, organizationId
     next();
   } catch (err) {
-    return sendError(res, 'Invalid or expired token.', 403);
+    if (err.name === 'TokenExpiredError') {
+      return sendError(res, 'Authentication required: Token expired', 401);
+    }
+    return sendError(res, 'Authentication required: Invalid token', 401);
   }
 };
+
+export const authenticateUser = authenticateToken;
 
 /**
  * Role-based access control (RBAC) middleware
@@ -34,11 +39,11 @@ export const authenticateToken = (req, res, next) => {
 export const requireRole = (allowedRoles = []) => {
   return (req, res, next) => {
     if (!req.user) {
-      return sendError(res, 'User not authenticated.', 401);
+      return sendError(res, 'Authentication required', 401);
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      return sendError(res, `Permission denied. Requires one of roles: ${allowedRoles.join(', ')}`, 403);
+      return sendError(res, 'Insufficient permissions', 403);
     }
 
     next();

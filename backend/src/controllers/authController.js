@@ -7,22 +7,12 @@
  */
 
 import { AuthService } from '../services/authService.js';
-import { AuditService } from '../services/auditService.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 
 export const register = async (req, res, next) => {
   try {
-    const { name, email, password, organizationName } = req.body;
-
-    if (!name || !email || !password) {
-      return sendError(res, 'Name, email, and password are required', 400);
-    }
-
-    if (password.length < 6) {
-      return sendError(res, 'Password must be at least 6 characters long', 422);
-    }
-
-    const data = await AuthService.registerUser({ name, email, password, organizationName });
+    const { name, email, password, role, organizationName } = req.body;
+    const data = await AuthService.registerUser({ name, email, password, role, orgName: organizationName });
     return sendSuccess(res, data, 201, 'User registered successfully');
   } catch (err) {
     next(err);
@@ -32,11 +22,6 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return sendError(res, 'Email and password are required', 400);
-    }
-
     const data = await AuthService.loginUser({ email, password });
     return sendSuccess(res, data, 200, 'Login successful');
   } catch (err) {
@@ -44,11 +29,21 @@ export const login = async (req, res, next) => {
   }
 };
 
+export const refreshSession = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+    const data = await AuthService.refreshSession(refreshToken);
+    return sendSuccess(res, data, 200, 'Session refreshed successfully');
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const logout = async (req, res, next) => {
   try {
-    if (req.user && req.user.id) {
-      await AuditService.recordEvent(req.user.id, 'USER_LOGOUT', `User signed out: ${req.user.email}`, 'setting');
-    }
+    const refreshToken = req.body ? req.body.refreshToken : null;
+    const userId = req.user ? req.user.id : null;
+    await AuthService.logoutUser(userId, refreshToken);
     return sendSuccess(res, null, 200, 'Logged out successfully');
   } catch (err) {
     next(err);
@@ -58,11 +53,11 @@ export const logout = async (req, res, next) => {
 export const getMe = async (req, res, next) => {
   try {
     if (!req.user || !req.user.id) {
-      return sendError(res, 'Not authenticated', 401);
+      return sendError(res, 'Authentication required', 401);
     }
 
-    const userProfile = await AuthService.getUserProfile(req.user.id);
-    return sendSuccess(res, userProfile, 200, 'User profile retrieved');
+    const sessionData = await AuthService.getProfile(req.user.id);
+    return sendSuccess(res, sessionData, 200, 'User session profile retrieved');
   } catch (err) {
     next(err);
   }
@@ -77,12 +72,12 @@ export const getSession = async (req, res, next) => {
       });
     }
 
-    const userProfile = await AuthService.getUserProfile(req.user.id);
+    const sessionData = await AuthService.getProfile(req.user.id);
     return res.status(200).json({
       status: 'success',
       data: {
         authenticated: true,
-        user: userProfile
+        ...sessionData
       }
     });
   } catch (err) {

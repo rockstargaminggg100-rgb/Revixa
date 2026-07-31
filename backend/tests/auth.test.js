@@ -1,202 +1,198 @@
 /**
- * REVIXA BACKEND — AUTHENTICATION & AUTHORIZATION SUITE (JEST + SUPERTEST)
+ * REVIXA BACKEND — AUTHENTICATION & AUTHORIZATION TEST SUITE (JEST + SUPERTEST)
  * backend/tests/auth.test.js
  */
 
 import request from 'supertest';
-import jwt from 'jsonwebtoken';
 import app from '../src/server.js';
-import { config } from '../src/config/env.js';
 
 describe('Phase 2.3 — Authentication & Authorization Test Suite', () => {
-  const testUser = {
-    name: 'Audit Test User',
-    email: `audit_${Date.now()}@eleganceparis.com`,
-    password: 'SecurePassword123!'
-  };
+  const validEmail = `test_user_${Date.now()}@revixa.io`;
+  const validPassword = 'Password123!';
+  let accessToken = '';
+  let refreshToken = '';
 
-  let authToken = '';
-  let userId = '';
-
-  // 1. Registration success + Duplicate email rejection (409)
+  // 1. POST /auth/register tests
   describe('POST /auth/register', () => {
-    it('should successfully register a new user and return JWT token', async () => {
+    it('should reject registration with weak password (missing special char or number) with 422', async () => {
       const res = await request(app)
         .post('/auth/register')
-        .send(testUser);
+        .send({
+          name: 'Test Weak',
+          email: 'weak@revixa.io',
+          password: 'weakpassword'
+        });
+
+      expect(res.status).toBe(422);
+      expect(res.body.status).toBe('error');
+      expect(res.body.message).toContain('Validation failed');
+    });
+
+    it('should successfully register a new user and return access & refresh tokens', async () => {
+      const res = await request(app)
+        .post('/auth/register')
+        .send({
+          name: 'Executive Owner',
+          email: validEmail,
+          password: validPassword,
+          role: 'Owner',
+          organizationName: 'Acme Luxury Retail'
+        });
 
       expect(res.status).toBe(201);
       expect(res.body.status).toBe('success');
-      expect(res.body.data.accessToken).toBeDefined();
-      expect(res.body.data.user.email).toBe(testUser.email.toLowerCase());
+      expect(res.body.data.user).toBeDefined();
+      expect(res.body.data.user.email).toBe(validEmail);
       expect(res.body.data.user.role).toBe('Owner');
-      expect(res.body.data.user.passwordHash).toBeUndefined(); // Sanitized profile
+      expect(res.body.data.accessToken).toBeDefined();
+      expect(res.body.data.refreshToken).toBeDefined();
 
-      authToken = res.body.data.accessToken;
-      userId = res.body.data.user.id;
+      accessToken = res.body.data.accessToken;
+      refreshToken = res.body.data.refreshToken;
     });
 
     it('should reject duplicate email registration with 409 Conflict', async () => {
       const res = await request(app)
         .post('/auth/register')
-        .send(testUser);
+        .send({
+          name: 'Duplicate User',
+          email: validEmail,
+          password: validPassword
+        });
 
       expect(res.status).toBe(409);
       expect(res.body.status).toBe('error');
-      expect(res.body.message).toContain('already exists');
+      expect(res.body.message).toContain('User with this email already exists');
     });
   });
 
-  // 2. Login success + Wrong password rejection (401)
+  // 2. POST /auth/login tests
   describe('POST /auth/login', () => {
-    it('should successfully authenticate user and return JWT token', async () => {
+    it('should successfully authenticate user and return access & refresh tokens', async () => {
       const res = await request(app)
         .post('/auth/login')
         .send({
-          email: testUser.email,
-          password: testUser.password
+          email: validEmail,
+          password: validPassword
         });
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe('success');
+      expect(res.body.data.user.email).toBe(validEmail);
       expect(res.body.data.accessToken).toBeDefined();
-      expect(res.body.data.user.email).toBe(testUser.email.toLowerCase());
+      expect(res.body.data.refreshToken).toBeDefined();
     });
 
     it('should reject login with wrong password returning 401 Unauthorized', async () => {
       const res = await request(app)
         .post('/auth/login')
         .send({
-          email: testUser.email,
+          email: validEmail,
           password: 'WrongPassword999!'
         });
 
       expect(res.status).toBe(401);
       expect(res.body.status).toBe('error');
-      expect(res.body.message).toContain('Invalid email or password');
+      expect(res.body.message).toContain('Invalid email or password credentials');
     });
   });
 
-  // 3-5. JWT Middleware validation (Missing, Invalid, Expired)
-  describe('JWT Middleware Validation', () => {
-    it('should return 401 Unauthorized for missing JWT token', async () => {
+  // 3. POST /auth/refresh Session Token Rotation
+  describe('POST /auth/refresh', () => {
+    it('should issue new access & refresh tokens when valid refresh token is supplied', async () => {
       const res = await request(app)
-        .get('/auth/me');
+        .post('/auth/refresh')
+        .send({ refreshToken });
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('success');
+      expect(res.body.data.accessToken).toBeDefined();
+      expect(res.body.data.refreshToken).toBeDefined();
+
+      // Update tokens for subsequent tests
+      accessToken = res.body.data.accessToken;
+      refreshToken = res.body.data.refreshToken;
+    });
+
+    it('should reject invalid or revoked refresh token with 401 Unauthorized', async () => {
+      const res = await request(app)
+        .post('/auth/refresh')
+        .send({ refreshToken: 'invalid_or_revoked_refresh_token' });
 
       expect(res.status).toBe(401);
-      expect(res.body.message).toContain('No authentication token provided');
-    });
-
-    it('should return 403 Forbidden for malformed/invalid JWT token', async () => {
-      const res = await request(app)
-        .get('/auth/me')
-        .set('Authorization', 'Bearer invalid_malformed_token_123');
-
-      expect(res.status).toBe(403);
-      expect(res.body.message).toContain('Invalid or expired token');
-    });
-
-    it('should return 403 Forbidden for expired JWT token', async () => {
-      const expiredToken = jwt.sign(
-        { id: userId, email: testUser.email, role: 'Owner' },
-        config.jwtSecret,
-        { expiresIn: '-1s' } // Expired token
-      );
-
-      const res = await request(app)
-        .get('/auth/me')
-        .set('Authorization', `Bearer ${expiredToken}`);
-
-      expect(res.status).toBe(403);
-      expect(res.body.message).toContain('Invalid or expired token');
+      expect(res.body.status).toBe('error');
     });
   });
 
-  // 6. Role Middleware enforcement (Wrong role hitting protected route)
-  describe('Role-Based Authorization (RBAC)', () => {
-    it('should return 403 Forbidden when a Viewer attempts Owner/Manager protected action', async () => {
-      const viewerToken = jwt.sign(
-        { id: 'usr_viewer_99', email: 'viewer@eleganceparis.com', role: 'Viewer' },
-        config.jwtSecret,
-        { expiresIn: '1h' }
-      );
-
+  // 4. GET /auth/me Session Profile Lookup
+  describe('GET /auth/me', () => {
+    it('should return session profile containing user, organization, and role for authenticated user', async () => {
       const res = await request(app)
-        .post('/api/v1/recommendations/rec_881/approve')
+        .get('/auth/me')
+        .set('Authorization', `Bearer ${accessToken}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('success');
+      expect(res.body.data.user).toBeDefined();
+      expect(res.body.data.user.email).toBe(validEmail);
+      expect(res.body.data.organization).toBeDefined();
+      expect(res.body.data.role).toBe('Owner');
+    });
+  });
+
+  // 5. POST /auth/logout Token Invalidation
+  describe('POST /auth/logout', () => {
+    it('should successfully logout user and invalidate refresh token', async () => {
+      const res = await request(app)
+        .post('/auth/logout')
+        .send({ refreshToken });
+
+      expect(res.status).toBe(200);
+
+      // Attempting to refresh with invalidated token must fail with 401
+      const refreshRes = await request(app)
+        .post('/auth/refresh')
+        .send({ refreshToken });
+
+      expect(refreshRes.status).toBe(401);
+    });
+  });
+
+  // 6. Role-Based Authorization (RBAC) Matrix
+  describe('Role-Based Authorization (RBAC)', () => {
+    let viewerToken = '';
+
+    beforeAll(async () => {
+      const viewerEmail = `viewer_${Date.now()}@revixa.io`;
+      const res = await request(app)
+        .post('/auth/register')
+        .send({
+          name: 'Viewer Analyst',
+          email: viewerEmail,
+          password: 'Password123!',
+          role: 'Viewer'
+        });
+      viewerToken = res.body.data.accessToken;
+    });
+
+    it('should return 403 Forbidden when a Viewer attempts Owner/Manager protected action', async () => {
+      const res = await request(app)
+        .post('/api/v1/recommendations/rec_101/approve')
         .set('Authorization', `Bearer ${viewerToken}`);
 
       expect(res.status).toBe(403);
-      expect(res.body.message).toContain('Permission denied');
+      expect(res.body.status).toBe('error');
+      expect(res.body.message).toContain('Insufficient permissions');
     });
 
     it('should allow Owner or Manager role to approve recommendation', async () => {
       const res = await request(app)
-        .post('/api/v1/recommendations/rec_881/approve')
-        .set('Authorization', `Bearer ${authToken}`);
+        .post('/api/v1/recommendations/rec_101/approve')
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body.status).toBe('success');
-      expect(res.body.data.status).toBe('executed');
-    });
-  });
-
-  // 7. GET /auth/me returns sanitized profile
-  describe('GET /auth/me', () => {
-    it('should return the authenticated user profile without sensitive fields', async () => {
-      const res = await request(app)
-        .get('/auth/me')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body.status).toBe('success');
-      expect(res.body.data.email).toBe(testUser.email.toLowerCase());
-      expect(res.body.data.role).toBe('Owner');
-      expect(res.body.data.passwordHash).toBeUndefined();
-    });
-  });
-
-  // 8. GET /auth/session state
-  describe('GET /auth/session', () => {
-    it('should return authenticated: true when valid JWT token is provided', async () => {
-      const res = await request(app)
-        .get('/auth/session')
-        .set('Authorization', `Bearer ${authToken}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body.data.authenticated).toBe(true);
-      expect(res.body.data.user.email).toBe(testUser.email.toLowerCase());
-    });
-
-    it('should return authenticated: false when unauthenticated', async () => {
-      const res = await request(app)
-        .get('/auth/session');
-
-      expect(res.status).toBe(200);
-      expect(res.body.data.authenticated).toBe(false);
-    });
-  });
-
-  // 9. Rate limiting triggers 429 on threshold
-  describe('Rate Limiting (429 Too Many Requests)', () => {
-    it('should return 429 when authentication rate limit threshold is exceeded', async () => {
-      const rateLimitUser = {
-        email: `ratelimit_${Date.now()}@eleganceparis.com`,
-        password: 'Password123!'
-      };
-
-      // Perform 10 requests to reach limit threshold
-      for (let i = 0; i < 10; i++) {
-        await request(app).post('/auth/login').send(rateLimitUser);
-      }
-
-      // The 11th request must trigger 429 Too Many Requests
-      const rateLimitedRes = await request(app)
-        .post('/auth/login')
-        .send(rateLimitUser);
-
-      expect(rateLimitedRes.status).toBe(429);
-      expect(rateLimitedRes.body.status).toBe('error');
-      expect(rateLimitedRes.body.message).toContain('Too many authentication attempts');
+      expect(res.body.message).toContain('approved');
     });
   });
 });

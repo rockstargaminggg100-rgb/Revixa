@@ -5,7 +5,7 @@
 
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { register, login, logout, getMe, getSession } from '../controllers/authController.js';
+import { register, login, refreshSession, logout, getMe, getSession } from '../controllers/authController.js';
 import { install, callback } from '../controllers/shopifyController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
@@ -29,8 +29,10 @@ export const authRateLimiter = rateLimit({
 router.post('/register', authRateLimiter, register);
 router.post('/login', authRateLimiter, login);
 
-// Standard Auth Endpoints
+// Refresh & Logout Endpoints
+router.post('/refresh', refreshSession);
 router.post('/logout', logout);
+
 router.get('/session', (req, res, next) => {
   const authHeader = req.headers['authorization'];
   if (authHeader) {
