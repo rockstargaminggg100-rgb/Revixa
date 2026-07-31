@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revixa — Business Intelligence & Action OS</title>
+  <meta name="description" content="Plain-English business intelligence and decision platform for DTC & e-commerce brands.">
+  
+  <!-- Typography: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app-shell.css">
+</head>
+<body class="light-editorial-theme app-body">
+
+  <!-- Engineering Background Grid Overlay -->
+  <div class="engineering-grid-overlay" aria-hidden="true"></div>
+
+  <!-- APP TOP HEADER -->
+  <header class="app-header">
+    <div class="app-header-left">
+      <a href="index.html" class="brand-logo" aria-label="Revixa Home">
+        <span class="logo-mark">R</span>
+        <span class="logo-text">REVIXA</span>
+      </a>
+
+      <!-- Store Selector & Demo Workspace Label -->
+      <div class="store-selector-dropdown" id="storeSelector" title="Store Workspace">
+        <span class="demo-store-pill" id="demoStoreBadge">DEMO STORE</span>
+        <span class="store-avatar" id="storeAvatar">L</span>
+        <span id="storeNameText">L'ÉLÉGANCE PARIS</span>
+        <span class="version-badge" id="sampleDataBadge" style="background: #FFFFFF; font-weight: 600;">Sample Data</span>
+        <span class="dropdown-arrow">▼</span>
+      </div>
+    </div>
+
+    <div class="app-header-right">
+      <!-- Scenario Story Engine Selector -->
+      <div class="state-switcher-group" title="Select Business Scenario Story">
+        <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-muted); align-self: center; margin-right: 2px;">SCENARIO:</span>
+        <select id="storySelector" style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 4px 6px; color: var(--text-primary); cursor: pointer;">
+          <option value="story_001">Story 001: Meta Win & Stockout</option>
+          <option value="story_002">Story 002: Google CPC Spike</option>
+          <option value="story_003">Story 003: Mobile Speed Surge</option>
+          <option value="story_004">Story 004: Email VIP Drop</option>
+        </select>
+      </div>
+
+      <!-- Enterprise Role Selector -->
+      <div class="state-switcher-group" title="User Access Role">
+        <span style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--text-muted); align-self: center; margin-right: 2px;">ROLE:</span>
+        <select id="roleSelector" style="background: #FFFFFF; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 4px 6px; color: var(--text-primary); cursor: pointer;">
+          <option value="Owner">Owner</option>
+          <option value="Manager">Manager</option>
+          <option value="Analyst">Analyst</option>
+          <option value="Viewer">Viewer</option>
+        </select>
+      </div>
+
+      <!-- Connection Status -->
+      <div class="sync-status-indicator">
+        <span class="dot-pulse"></span>
+        <span class="sync-text">Shopify • Meta • GA4 • Klaviyo &nbsp;|&nbsp; <strong>Last Sync: 14s ago</strong></span>
+      </div>
+
+      <!-- Notification Bell -->
+      <button class="state-switcher-btn" id="notifBellBtn" title="Notifications & Alerts" onclick="openNotifModal()" style="position: relative; display: inline-flex; align-items: center; gap: 4px;">
+        🔔 <span class="notif-badge" id="notifCountBadge" style="background: var(--accent-red); color: white; border-radius: 99px; padding: 1px 5px; font-size: 9px; font-weight: 700;">2</span>
+      </button>
+
+      <!-- Global Command Trigger (⌘K) -->
+      <button class="command-palette-trigger" id="cmdTrigger" aria-label="Search or type command">
+        <span class="kbd-badge">⌘K</span>
+        <span class="trigger-text">Search...</span>
+      </button>
+
+      <!-- User Profile -->
+      <div class="header-user-badge" id="userProfileBadge">
+        <div class="user-avatar" id="userAvatarText">JV</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="app-container">
+    
+    <!-- RESPONSIVE SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar" aria-label="Sidebar Navigation">
+      <div class="sidebar-nav-group">
+        <span class="sidebar-label">ANALYTICS</span>
+        
+        <a href="#dashboard" class="sidebar-link active" data-view="dashboard">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">📊</span>
+            <span>Dashboard</span>
+          </div>
+        </a>
+
+        <a href="#insights" class="sidebar-link" data-view="insights">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">🌿</span>
+            <span>Insights Feed</span>
+          </div>
+        </a>
+
+        <a href="#forecast" class="sidebar-link" data-view="forecast">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">🔮</span>
+            <span>Forecast</span>
+          </div>
+        </a>
+
+        <span class="sidebar-label" style="margin-top: 20px;">OPERATIONS</span>
+
+        <a href="#products" class="sidebar-link" data-view="products">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">📦</span>
+            <span>Products & Stock</span>
+          </div>
+          <span class="action-alert-dot" title="Stockout Risk"></span>
+        </a>
+
+        <a href="#marketing" class="sidebar-link" data-view="marketing">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">🎯</span>
+            <span>Marketing</span>
+          </div>
+        </a>
+
+        <a href="#customers" class="sidebar-link" data-view="customers">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">👥</span>
+            <span>Customers</span>
+          </div>
+        </a>
+
+        <a href="#settings" class="sidebar-link" data-view="settings" style="margin-top: 20px;">
+          <div class="sidebar-link-inner">
+            <span class="sidebar-icon">⚙️</span>
+            <span>Settings</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Compact Integrations Panel (Replaces decorative footer) -->
+      <div class="compact-integrations-panel">
+        <div class="integrations-header">CONNECTED</div>
+        <div class="integrations-chips">
+          <span>✓ Shopify</span>
+          <span>✓ Meta</span>
+          <span>✓ GA4</span>
+          <span>✓ Klaviyo</span>
+        </div>
+        <div class="integrations-sync">Last Sync: 14 seconds ago</div>
+      </div>
+    </aside>
+
+    <!-- MAIN VIEWPORT CONTAINER (SPA ROUTER) -->
+    <main class="app-viewport">
+      
+      <!-- ===================================================================
+           VIEW 1: DASHBOARD (CENTERPIECE — "What happened in my business today?")
+           =================================================================== -->
+      <div class="page-view active" id="view-dashboard">
+        
+        <!-- Page Title Bar -->
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">What happened in your business today?</h1>
+            <p class="page-subhead">Plain-English explanation across your sales, ad channels, and inventory.</p>
+          </div>
+
+          <div class="page-actions-group">
+            <div class="window-time-range">
+              <button class="time-btn active">7 Days</button>
+              <button class="time-btn">30 Days</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Core KPI Cards Above the Fold Only (Clean & Calm) -->
+        <div class="metrics-strip-4col">
+          <div class="metric-card positive">
+            <div class="metric-label">REVENUE (7D)</div>
+            <div class="metric-value">$184,250 <span class="metric-trend">▲ +18.4%</span></div>
+            <div class="metric-subtext">+$28,600 vs prior period</div>
+          </div>
+
+          <div class="metric-card positive">
+            <div class="metric-label">ORDERS</div>
+            <div class="metric-value">1,240 <span class="metric-trend">▲ +12.1%</span></div>
+            <div class="metric-subtext">Avg order value: $148.58</div>
+          </div>
+
+          <div class="metric-card highlight">
+            <div class="metric-label">CONVERSION RATE</div>
+            <div class="metric-value">3.84% <span class="metric-trend">▲ +0.62%</span></div>
+            <div class="metric-subtext">Led by mobile speed gain</div>
+          </div>
+
+          <div class="metric-card danger">
+            <div class="metric-label">INVENTORY RISK</div>
+            <div class="metric-value">5 Days <span class="metric-alert">ACTION REQ</span></div>
+            <div class="metric-subtext">Silk Blazer SKU #881 (42 left)</div>
+          </div>
+        </div>
+
+        <!-- SIGNATURE AI INSIGHT HERO PANEL (PRIMARY VISUAL CENTERPIECE) -->
+        <div class="signature-ai-hero-panel">
+          <div class="ai-hero-header-bar">
+            <div class="ai-hero-tag">
+              <span class="pulse-icon"></span>
+              REVIXA AI INSIGHT
+            </div>
+            <div class="ai-confidence-badge">CONFIDENCE SCORE: 96.2%</div>
+          </div>
+
+          <div class="ai-hero-body">
+            
+            <div class="narrative-pipeline">
+              
+              <!-- 1. Observation -->
+              <div class="pipeline-step active">
+                <div class="step-node-icon">01</div>
+                <div class="step-node-content">
+                  <div class="step-node-label">OBSERVATION</div>
+                  <h3 class="step-node-headline">Revenue increased +$28,600 (+18.4%) this week while total ad spend remained flat.</h3>
+                  <p class="step-node-detail">Customer acquisition cost (CAC) dropped from $48.10 to $42.10. Gross profit expanded by +2.1% across luxury outerwear.</p>
+                </div>
+              </div>
+
+              <!-- 2. Root Cause -->
+              <div class="pipeline-step active">
+                <div class="step-node-icon">02</div>
+                <div class="step-node-content">
+                  <div class="step-node-label">ROOT CAUSE</div>
+                  <h3 class="step-node-headline">Meta target shift toward high-AOV demographic (Ages 28-44) + mobile speed improvement (+400ms faster).</h3>
+                  <p class="step-node-detail">Meta campaign "Q3 Outerwear" automatically shifted budget toward buyers with a $210 average order value. Concurrently, Monday's image optimization update reduced checkout drop-off by 4.2%.</p>
+                </div>
+              </div>
+
+              <!-- 3. Evidence -->
+              <div class="pipeline-step active">
+                <div class="step-node-icon">03</div>
+                <div class="step-node-content">
+                  <div class="step-node-label">EVIDENCE</div>
+                  <div class="step-evidence-pills">
+                    <span class="evidence-pill">✓ Meta Creative #12 generated 64% of new conversions</span>
+                    <span class="evidence-pill">✓ Safari Mobile load time decreased from 1.4s to 1.0s</span>
+                    <span class="evidence-pill">✓ Cart-to-checkout conversion improved from 2.8% to 3.42%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Recommendation -->
+              <div class="pipeline-step active">
+                <div class="step-node-icon">04</div>
+                <div class="step-node-content">
+                  <div class="step-node-label">RECOMMENDATION</div>
+                  <h3 class="step-node-headline">Restock Silk Blazer SKU #881 & scale Meta Creative #12 budget by +$750/day.</h3>
+                  <p class="step-node-detail">Silk Blazer selling rate is 8.1 units/day with only 42 units remaining in warehouse. An expedited order is required to prevent a 10-day stockout gap.</p>
+                </div>
+              </div>
+
+              <!-- 5. Expected Business Impact -->
+              <div class="pipeline-step active">
+                <div class="step-node-icon">05</div>
+                <div class="step-node-content" style="background: var(--accent-green-subtle); border-color: var(--accent-green-border);">
+                  <div class="step-node-label" style="color: var(--accent-green);">EXPECTED BUSINESS IMPACT</div>
+                  <h3 class="step-node-headline" style="color: var(--accent-green);">Prevent -$34,000 in lost stockout revenue & capture +$18,400 profit gain.</h3>
+                  <div class="impact-highlight-box">
+                    <span>CONFIDENCE SCORE: 96.2%</span>
+                    <button class="btn btn-primary btn-sm action-btn" data-action="po" id="heroPoBtn">Restock SKU #881 Now</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TODAY'S PRIORITIES QUEUE (NEW CORE SECTION) -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">TODAY'S PRIORITIES</h3>
+            <span class="dash-card-sub">2 Decision Items</span>
+          </div>
+
+          <div class="priorities-queue-list">
+            
+            <!-- Priority Item 1 -->
+            <div class="priority-queue-item">
+              <div class="priority-badge-box high">
+                <span class="priority-level">HIGH PRIORITY</span>
+                <span class="priority-type">Inventory Stockout</span>
+              </div>
+              <div class="priority-main-content">
+                <h4 class="priority-item-title">Restock Silk Blazer SKU #881</h4>
+                <p class="priority-item-desc">Warehouse stock at 42 units (5 days remaining). Submit expedited PO to supplier.</p>
+              </div>
+              <div class="priority-financial-box negative">
+                <span class="fin-label">POTENTIAL LOSS</span>
+                <span class="fin-value">-$34,000</span>
+              </div>
+              <div class="priority-action-box">
+                <button class="btn btn-primary btn-sm action-btn" data-action="po">Review Action</button>
+              </div>
+            </div>
+
+            <!-- Priority Item 2 -->
+            <div class="priority-queue-item">
+              <div class="priority-badge-box medium">
+                <span class="priority-level">RECOMMENDED</span>
+                <span class="priority-type">Ad Budget Scale</span>
+              </div>
+              <div class="priority-main-content">
+                <h4 class="priority-item-title">Scale Meta Creative #12 Budget</h4>
+                <p class="priority-item-desc">Increase daily spend limit by +$750/day while CPA remains below $45 threshold.</p>
+              </div>
+              <div class="priority-financial-box positive">
+                <span class="fin-label">POTENTIAL GAIN</span>
+                <span class="fin-value">+$18,400</span>
+              </div>
+              <div class="priority-action-box">
+                <button class="btn btn-secondary btn-sm action-btn" data-action="budget">Review Action</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- NARRATIVE 30-DAY FORECAST -->
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3 class="dash-card-title">MONTHLY REVENUE FORECAST</h3>
+          </div>
+          <div class="narrative-forecast-box">
+            <h4 class="brief-title">Expected Revenue: $780,000 (+22% YoY)</h4>
+            <p class="brief-body">
+              If SKU #881 is restocked today, your store is projected to reach $780k net revenue. If supplier PO is delayed beyond 48 hours, inventory bottleneck will cap month-end revenue at $712k.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===================================================================
+           VIEW 2: INSIGHTS FEED
+           =================================================================== -->
+      <div class="page-view" id="view-insights">
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">Insights Feed</h1>
+            <p class="page-subhead">Plain-English explanations of what changed in your business and why.</p>
+          </div>
+        </div>
+
+        <div class="causal-nodes-list">
+          <div class="causal-node-item active">
+            <div class="node-icon bg-blue">1</div>
+            <div class="node-content">
+              <div class="node-title">Meta Ad CAC Improved (-22%)</div>
+              <div class="node-meta">Creative #12 ("Silk Texture Focus") drove 64% of new orders</div>
+            </div>
+            <div class="node-impact positive">+$18.2k Revenue</div>
+          </div>
+
+          <div class="causal-node-item">
+            <div class="node-icon bg-green">2</div>
+            <div class="node-content">
+              <div class="node-title">Mobile Page Load Speed (+400ms faster)</div>
+              <div class="node-meta">Image optimization reduced cart drop-off by 4.2%</div>
+            </div>
+            <div class="node-impact positive">+$7.4k Revenue</div>
+          </div>
+
+          <div class="causal-node-item">
+            <div class="node-icon bg-red">3</div>
+            <div class="node-content">
+              <div class="node-title">Inventory Stockout Risk</div>
+              <div class="node-meta">Silk Blazer SKU #881: 42 units left (Run rate: 8.1 units/day)</div>
+            </div>
+            <div class="node-impact negative">-$34.0k Risk</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           VIEW 3: FORECAST (NARRATIVE FIRST)
+           =================================================================== -->
+      <div class="page-view" id="view-forecast">
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">Revenue & Inventory Forecast</h1>
+            <p class="page-subhead">Predictive trajectory and stockout risk timelines.</p>
+          </div>
+        </div>
+
+        <!-- Narrative Forecast Block (Leads with explanation before charts) -->
+        <div class="narrative-forecast-hero">
+          <div class="forecast-grid-2col">
+            <div>
+              <div class="step-node-label">NARRATIVE FORECAST</div>
+              <h2 class="section-headline" style="font-size: 24px; margin-bottom: 8px;">Expected Month-End Revenue: $780,000</h2>
+              <p class="section-sub-lead" style="font-size: 14px; margin-bottom: 16px;">
+                Your store is currently tracking +22% YoY. Restocking SKU #881 within 48 hours protects $34,000 in revenue.
+              </p>
+            </div>
+
+            <div class="forecast-stats-list">
+              <div class="forecast-stat-item">
+                <span class="f-label">LIKELIHOOD</span>
+                <span class="f-val text-blue">High (94.8%)</span>
+              </div>
+              <div class="forecast-stat-item">
+                <span class="f-label">PRIMARY RISK</span>
+                <span class="f-val text-amber">SKU-881 Stockout</span>
+              </div>
+              <div class="forecast-stat-item">
+                <span class="f-label">RECOMMENDED ACTION</span>
+                <span class="f-val">Restock SKU-881</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <h3 class="dash-card-title">INVENTORY RUN-RATE TIMELINE</h3>
+          <table class="app-data-table">
+            <thead>
+              <tr>
+                <th>PRODUCT SKU</th>
+                <th>CURRENT STOCK</th>
+                <th>DAILY SALES</th>
+                <th>DAYS REMAINING</th>
+                <th>RECOMMENDED ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Silk Blazer SKU #881</strong></td>
+                <td>42 units</td>
+                <td>8.1 units/day</td>
+                <td><strong>5.2 Days</strong></td>
+                <td><button class="btn btn-primary btn-sm action-btn" data-action="po">Restock Now</button></td>
+              </tr>
+              <tr>
+                <td>Cashmere Crewneck #104</td>
+                <td>180 units</td>
+                <td>4.2 units/day</td>
+                <td>42.8 Days</td>
+                <td><span>No Action Needed</span></td>
+              </tr>
+              <tr>
+                <td>Slim Linen Trouser #410</td>
+                <td>95 units</td>
+                <td>3.1 units/day</td>
+                <td>30.6 Days</td>
+                <td><span>Monitor</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           VIEW 4: PRODUCTS
+           =================================================================== -->
+      <div class="page-view" id="view-products">
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">Products & Margins</h1>
+            <p class="page-subhead">Product sales velocity, margins, and stock levels.</p>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <table class="app-data-table">
+            <thead>
+              <tr>
+                <th>PRODUCT NAME</th>
+                <th>SKU</th>
+                <th>REVENUE (7D)</th>
+                <th>GROSS MARGIN</th>
+                <th>STOCK STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Silk Executive Blazer</td>
+                <td>SKU #881</td>
+                <td>$48,200</td>
+                <td>68.4%</td>
+                <td><span style="color: var(--accent-red); font-weight: 600;">5 Days Left</span></td>
+              </tr>
+              <tr>
+                <td>Cashmere Crewneck Sweater</td>
+                <td>SKU #104</td>
+                <td>$32,400</td>
+                <td>74.2%</td>
+                <td><span>42 Days Left</span></td>
+              </tr>
+              <tr>
+                <td>Slim Linen Trouser</td>
+                <td>SKU #410</td>
+                <td>$18,900</td>
+                <td>61.0%</td>
+                <td><span>30 Days Left</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           VIEW 5: MARKETING
+           =================================================================== -->
+      <div class="page-view" id="view-marketing">
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">Marketing & Ad Performance</h1>
+            <p class="page-subhead">Ad channel efficiency, CAC, and return on spend.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-grid-3col">
+          <div class="dash-widget-card">
+            <div class="widget-title">META ADS</div>
+            <div class="metric-value">$32,400 <span class="metric-trend">3.4x ROAS</span></div>
+            <div class="metric-subtext">CAC: $38.20</div>
+          </div>
+          <div class="dash-widget-card">
+            <div class="widget-title">GOOGLE SEARCH</div>
+            <div class="metric-value">$14,200 <span class="metric-trend" style="color: var(--accent-amber);">1.8x ROAS</span></div>
+            <div class="metric-subtext">CAC: $64.10</div>
+          </div>
+          <div class="dash-widget-card">
+            <div class="widget-title">KLAVIYO EMAIL</div>
+            <div class="metric-value">$28,900 <span class="metric-trend">14.2x ROAS</span></div>
+            <div class="metric-subtext">Open Rate: 42.1%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           VIEW 6: CUSTOMERS (AI EXPLANATION FIRST)
+           =================================================================== -->
+      <div class="page-view" id="view-customers">
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">Customer Behavior & Repeat Sales</h1>
+            <p class="page-subhead">Customer lifetime value and repeat purchase patterns.</p>
+          </div>
+        </div>
+
+        <!-- AI Narrative Explanation -->
+        <div class="brief-mock-box" style="margin-bottom: 24px;">
+          <div class="brief-tag">AI CUSTOMER INSIGHT</div>
+          <h3 class="brief-title">60-Day Customer LTV grew +14% to $210.40</h3>
+          <p class="brief-body">
+            Buyers acquired through Meta campaign "Q3 Outerwear" demonstrate a 34.2% repeat purchase rate within 90 days. Recommended action: Launch dedicated VIP post-purchase email sequence to accelerate second purchase.
+          </p>
+        </div>
+
+        <div class="dash-card">
+          <div class="calc-stat-row">
+            <div class="calc-stat-block">
+              <span class="stat-number text-blue">$210.40</span>
+              <span class="stat-label">60-Day Customer LTV</span>
+            </div>
+            <div class="calc-stat-block">
+              <span class="stat-number text-green">34.2%</span>
+              <span class="stat-label">90-Day Repeat Purchase Rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           VIEW 7: SETTINGS
+           =================================================================== -->
+      <div class="page-view" id="view-settings">
+        <div class="page-header-title-bar">
+          <div>
+            <h1 class="page-headline">Settings & Channel Connections</h1>
+            <p class="page-subhead">Manage channel integrations and alert thresholds.</p>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <h3 class="dash-card-title">Profit Margin Guardrail</h3>
+          <p class="section-sub-lead" style="font-size: 14px;">Set alert thresholds when ad channel cost threatens minimum profit margin limits.</p>
+          <div style="margin-top: 16px; display: flex; gap: 12px;">
+            <input type="text" value="Minimum Gross Margin: 55%" style="padding: 10px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 13px;" readonly>
+            <button class="btn btn-primary btn-sm">Save Preference</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO SKELETON STATE VIEW CONTAINER -->
+      <div class="page-view" id="view-skeleton-container" style="display: none;">
+        <div class="dash-card">
+          <div class="skeleton-loader" style="height: 32px; width: 40%; margin-bottom: 16px;"></div>
+          <div class="skeleton-loader" style="height: 180px; width: 100%; margin-bottom: 16px;"></div>
+          <div class="skeleton-loader" style="height: 120px; width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- DEMO EMPTY STATE VIEW CONTAINER -->
+      <div class="page-view" id="view-empty-container" style="display: none;">
+        <div class="empty-state-card">
+          <span class="empty-icon">⚡</span>
+          <h3 class="empty-headline">No Connected Channels</h3>
+          <p class="empty-desc">Connect your Shopify store and ad accounts to start receiving business insights.</p>
+          <button class="btn btn-primary btn-sm">Connect Shopify Store</button>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- DECISION REVIEW MODAL (WITH FAKE AI THINKING STEP) -->
+  <div class="modal-overlay" id="reviewModal" aria-hidden="true">
+    <div class="cmd-modal-box" style="max-width: 520px; padding: 28px;">
+      <div id="aiThinkingState" style="display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; padding: 20px 0;">
+        <div class="spinner-ring"></div>
+        <h3 style="font-size: 16px; font-weight: 700; color: var(--text-primary);">Revixa AI Thinking...</h3>
+        <div id="aiThinkingSteps" style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: flex; flex-direction: column; gap: 6px;">
+          <div>● Analyzing warehouse inventory velocity...</div>
+        </div>
+      </div>
+
+      <div id="aiReviewReadyState">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+          <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary);" id="reviewModalTitle">Review Operational Action</h3>
+          <button style="border: none; background: transparent; cursor: pointer; font-size: 16px;" onclick="closeReviewModal()">✕</button>
+        </div>
+
+        <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-subtle); padding: 16px; border-radius: var(--radius-md); margin-bottom: 20px; font-size: 13px; color: var(--text-secondary); line-height: 1.5;" id="reviewModalBody">
+          Submit expedited purchase order for 250 units of Silk Blazer SKU #881 via air freight to Italian supplier to prevent -$34,000 stockout gap.
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-family: var(--font-mono); font-size: 12px;">
+          <span>CONFIDENCE SCORE: <strong style="color: var(--accent-blue);">96.2%</strong></span>
+          <span>ESTIMATED GAIN/LOSS: <strong style="color: var(--accent-green);" id="reviewModalValue">+$34,000</strong></span>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-secondary btn-block" onclick="closeReviewModal()">Cancel</button>
+          <button class="btn btn-primary btn-block" id="approveActionBtn" onclick="approveReviewAction()">Approve & Execute Action →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS DROPDOWN MODAL -->
+  <div class="modal-overlay" id="notifModal" aria-hidden="true">
+    <div class="cmd-modal-box" style="max-width: 420px; padding: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+        <h3 style="font-size: 15px; font-weight: 700; color: var(--text-primary);">Notifications & Alerts</h3>
+        <button style="border: none; background: transparent; cursor: pointer;" onclick="closeNotifModal()">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;" id="notifList">
+        <div style="padding: 10px; background: var(--accent-red-subtle); border: 1px solid var(--accent-red-border); border-radius: var(--radius-md); font-size: 12px; color: var(--accent-red);">
+          🚨 <strong>Critical Stockout Risk:</strong> Silk Blazer SKU #881 has 5.2 days remaining.
+        </div>
+        <div style="padding: 10px; background: var(--accent-blue-subtle); border: 1px solid var(--accent-blue-border); border-radius: var(--radius-md); font-size: 12px; color: var(--accent-blue);">
+          📈 <strong>Performance Gain:</strong> Meta Creative #12 CPA dropped 22%.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE MODAL (⌘K) -->
+  <div class="modal-overlay" id="cmdModal" aria-hidden="true">
+    <div class="cmd-modal-box">
+      <div class="cmd-input-header">
+        <span class="cmd-icon">🔍</span>
+        <input type="text" id="cmdInput" placeholder="Type a command or search pages, SKUs, campaigns...">
+        <span class="kbd-badge">ESC</span>
+      </div>
+      <div class="cmd-results-list" id="cmdResults">
+        <div class="cmd-item selected" data-view="dashboard">
+          <span class="cmd-item-icon">📊</span>
+          <span class="cmd-item-text">Go to Dashboard</span>
+          <span class="cmd-item-shortcut">↵</span>
+        </div>
+        <div class="cmd-item" data-view="insights">
+          <span class="cmd-item-icon">🌿</span>
+          <span class="cmd-item-text">View Causal Insights Feed</span>
+          <span class="cmd-item-shortcut">⌘1</span>
+        </div>
+        <div class="cmd-item" data-view="forecast">
+          <span class="cmd-item-icon">🔮</span>
+          <span class="cmd-item-text">Check Inventory Forecast</span>
+          <span class="cmd-item-shortcut">⌘2</span>
+        </div>
+        <div class="cmd-item" data-view="products">
+          <span class="cmd-item-icon">📦</span>
+          <span class="cmd-item-text">Inspect Products & SKU #881</span>
+          <span class="cmd-item-shortcut">⌘3</span>
+        </div>
+        <div class="cmd-item" data-view="marketing">
+          <span class="cmd-item-icon">🎯</span>
+          <span class="cmd-item-text">Inspect Meta Creative #12</span>
+          <span class="cmd-item-shortcut">⌘4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; pointer-events: none;"></div>
+
+  <script type="module" src="src/app.js"></script>
+  <script src="app-shell.js"></script>
+</body>
+</html>

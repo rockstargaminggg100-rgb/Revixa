@@ -1,0 +1,180 @@
+// REVIXA DATABASE SCHEMA (PRISMA ORM FOR POSTGRESQL)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  Owner
+  Manager
+  Analyst
+  Viewer
+}
+
+enum ActionStatus {
+  PENDING
+  EXECUTED
+  DISMISSED
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  users  User[]
+  stores Store[]
+
+  @@map("organizations")
+}
+
+model User {
+  id             String       @id @default(uuid())
+  organizationId String       @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         Role     @default(Owner)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  notifications Notification[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+model Store {
+  id             String       @id @default(uuid())
+  organizationId String       @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  name            String
+  domain          String
+  myshopifyDomain String   @unique @map("myshopify_domain")
+  accessToken     String?  @map("access_token")
+  status          String   @default("connected")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  products        Product[]
+  customers       Customer[]
+  orders          Order[]
+  recommendations Recommendation[]
+  settings        Setting?
+
+  @@map("stores")
+}
+
+model Product {
+  id      String @id @default(uuid())
+  storeId String @map("store_id")
+  store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  title          String
+  sku            String   @unique
+  price          Float
+  costPrice      Float    @map("cost_price")
+  margin         Float
+  inventoryUnits Int      @map("inventory_units")
+  dailyRunRate   Float    @map("daily_run_rate")
+  daysRemaining  Float    @map("days_remaining")
+  status         String   @default("healthy")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("products")
+}
+
+model Customer {
+  id      String @id @default(uuid())
+  storeId String @map("store_id")
+  store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  firstName   String   @map("first_name")
+  lastName    String   @map("last_name")
+  email       String
+  ltv60d      Float    @map("ltv_60d")
+  totalOrders Int      @map("total_orders")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  orders Order[]
+
+  @@map("customers")
+}
+
+model Order {
+  id      String @id @default(uuid())
+  storeId String @map("store_id")
+  store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  orderNumber String    @unique @map("order_number")
+  totalPrice  Float     @map("total_price")
+  customerId  String?   @map("customer_id")
+  customer    Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("orders")
+}
+
+model Recommendation {
+  id      String @id @default(uuid())
+  storeId String @map("store_id")
+  store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  title           String
+  observation     String
+  rootCause       String       @map("root_cause")
+  evidence        String[]
+  recommendation  String
+  expectedImpact  String       @map("expected_impact")
+  confidenceScore Float        @map("confidence_score")
+  status          ActionStatus @default(PENDING)
+  createdAt       DateTime     @default(now()) @map("created_at")
+
+  @@map("recommendations")
+}
+
+model Notification {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type      String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  action    String
+  details   String
+  type      String   @default("action")
+  timestamp DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+model Setting {
+  id      String @id @default(uuid())
+  storeId String @unique @map("store_id")
+  store   Store  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  minMarginGuardrail Float    @default(55.0) @map("min_margin_guardrail")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}

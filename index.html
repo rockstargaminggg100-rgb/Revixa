@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revixa — AI Commerce Intelligence OS</title>
+  <meta name="description" content="Know why your business changed. Revixa replaces confusing analytics dashboards with intelligent narrative explanations and actionable decisions for DTC & e-commerce brands.">
+  
+  <!-- SEO & OpenGraph -->
+  <meta property="og:title" content="Revixa — AI Commerce Intelligence OS">
+  <meta property="og:description" content="Know why your business changed. Not more dashboards. Just clear explanations and actionable decisions.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Typography: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-editorial-theme">
+
+  <!-- Texture Overlays -->
+  <div class="paper-grain-overlay" aria-hidden="true"></div>
+  <div class="engineering-grid-overlay" aria-hidden="true"></div>
+  <svg class="data-flow-canvas" id="dataFlowCanvas" aria-hidden="true"></svg>
+
+  <!-- Top Navigation -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner container">
+      <a href="#" class="brand-logo" aria-label="Revixa Home">
+        <span class="logo-mark">R</span>
+        <span class="logo-text">REVIXA</span>
+        <span class="version-badge">OS 2.4</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="#intelligence" class="nav-link">Intelligence Engine</a>
+        <a href="#storytelling" class="nav-link">Causal Attribution</a>
+        <a href="#comparison" class="nav-link">The Anti-Pattern</a>
+        <a href="#playground" class="nav-link">Prescriptive Actions</a>
+        <a href="#calculator" class="nav-link">ROI Calculator</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="command-palette-trigger" id="cmdTrigger" aria-label="Open Command Palette">
+          <span class="kbd-badge">⌘K</span>
+          <span class="trigger-text">Search engine...</span>
+        </button>
+        <a href="auth.html" class="btn btn-primary">Start Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="container">
+        <div class="hero-header-box">
+          <div class="editorial-tag-wrapper">
+            <span class="mono-tag">[ 01 / COMMERCE INTELLIGENCE OS ]</span>
+            <span class="status-indicator"><span class="dot-pulse"></span> SYSTEM ACTIVE • 4.2M EVENTS ANALYZED TODAY</span>
+          </div>
+
+          <h1 class="hero-title">
+            Know why your business changed.<br>
+            <span class="headline-dimmed">Not more dashboards. Just answers.</span>
+          </h1>
+
+          <p class="hero-lead">
+            Revixa transforms fragmented Shopify, Klaviyo, and ad channel signals into clear executive explanations and precise operational decisions.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="auth.html" class="btn btn-primary btn-lg">Start Free</a>
+            <a href="dashboard.html?demo=true" class="btn btn-secondary btn-lg">
+              Explore Live Demo
+            </a>
+          </div>
+        </div>
+
+        <!-- HERO VISUAL: The Live Revixa Copilot Dashboard -->
+        <div class="hero-dashboard-wrapper" id="dashboardHero">
+          <div class="dashboard-window">
+            
+            <!-- Window Topbar -->
+            <div class="window-header">
+              <div class="window-controls">
+                <span class="control-dot close"></span>
+                <span class="control-dot minimize"></span>
+                <span class="control-dot maximize"></span>
+              </div>
+              <div class="window-title-bar">
+                <span class="window-icon">⚡</span>
+                <span class="window-title-text">Revixa Copilot v2.4 — Executive Morning Brief</span>
+                <span class="store-badge">STORE: L'ÉLÉGANCE PARIS (SHOPIFY PLUS)</span>
+              </div>
+              <div class="window-time-range">
+                <span class="time-label">Range:</span>
+                <button class="time-btn active" data-range="7d">7 Days</button>
+                <button class="time-btn" data-range="30d">30 Days</button>
+              </div>
+            </div>
+
+            <!-- Dashboard Body -->
+            <div class="dashboard-body">
+              
+              <!-- Sidebar Navigation inside Dashboard -->
+              <aside class="dash-sidebar">
+                <div class="dash-user-profile">
+                  <div class="avatar-box">LE</div>
+                  <div class="user-meta">
+                    <span class="user-name">Julian Vance</span>
+                    <span class="user-role">Head of Ecommerce</span>
+                  </div>
+                </div>
+
+                <div class="dash-nav-section">
+                  <span class="dash-nav-label">INTELLIGENCE LAYER</span>
+                  <button class="dash-nav-item active" data-tab="brief">
+                    <span class="nav-icon">📊</span> Executive Brief
+                    <span class="badge-count">1 Critical</span>
+                  </button>
+                  <button class="dash-nav-item" data-tab="causal">
+                    <span class="nav-icon">🌿</span> Causal Tree
+                  </button>
+                  <button class="dash-nav-item" data-tab="prescriptions">
+                    <span class="nav-icon">🎯</span> Prescriptions
+                    <span class="badge-count action">2 Pending</span>
+                  </button>
+                  <button class="dash-nav-item" data-tab="horizon">
+                    <span class="nav-icon">🔮</span> Predictive Horizon
+                  </button>
+                </div>
+
+                <div class="dash-nav-section">
+                  <span class="dash-nav-label">CONNECTED SIGNALS</span>
+                  <div class="signal-item connected">
+                    <span class="signal-dot"></span> Shopify Plus
+                    <span class="signal-status">Live</span>
+                  </div>
+                  <div class="signal-item connected">
+                    <span class="signal-dot"></span> Meta Ads API
+                    <span class="signal-status">Live</span>
+                  </div>
+                  <div class="signal-item connected">
+                    <span class="signal-dot"></span> Klaviyo Email
+                    <span class="signal-status">Live</span>
+                  </div>
+                  <div class="signal-item connected">
+                    <span class="signal-dot"></span> Google Analytics 4
+                    <span class="signal-status">Live</span>
+                  </div>
+                </div>
+              </aside>
+
+              <!-- Main Dashboard Viewport -->
+              <div class="dash-viewport">
+                
+                <!-- Top Metrics Summary Strip -->
+                <div class="metrics-strip">
+                  <div class="metric-card positive">
+                    <div class="metric-label">NET REVENUE (7D)</div>
+                    <div class="metric-value">$184,250 <span class="metric-trend">▲ +18.4%</span></div>
+                    <div class="metric-subtext">+$28,600 vs prior 7d</div>
+                  </div>
+
+                  <div class="metric-card warning">
+                    <div class="metric-label">BLENDED CAC</div>
+                    <div class="metric-value">$42.10 <span class="metric-trend">▼ -12.5%</span></div>
+                    <div class="metric-subtext">Improved efficiency</div>
+                  </div>
+
+                  <div class="metric-card highlight">
+                    <div class="metric-label">CONVERSION RATE</div>
+                    <div class="metric-value">3.84% <span class="metric-trend">▲ +0.62%</span></div>
+                    <div class="metric-subtext">Led by mobile speed gain</div>
+                  </div>
+
+                  <div class="metric-card danger">
+                    <div class="metric-label">STOCKOUT RISK</div>
+                    <div class="metric-value">5 Days <span class="metric-alert">HIGH RISK</span></div>
+                    <div class="metric-subtext">Silk Blazer SKU #881</div>
+                  </div>
+                </div>
+
+                <!-- Executive Explanation Banner (THE CORE OFFERING) -->
+                <div class="explanation-hero-box">
+                  <div class="explanation-tag">
+                    <span class="pulse-icon"></span> REVIXA EXECUTIVE SYNTHESIS • UPDATED 12 MINS AGO
+                  </div>
+                  <h2 class="explanation-headline">
+                    Revenue increased by <span class="text-green">+$28,600</span> this week, driven primarily by a <span class="text-blue">22% reduction in Meta CAC</span> and landing page velocity gains.
+                  </h2>
+                  <p class="explanation-paragraph">
+                    Your scaled campaign <em>"Q3 Luxury Outerwear"</em> hit peak algorithmic efficiency on Tuesday, yielding a 3.4x ROAS. However, your top-converting SKU (<em>Silk Executive Blazer - Size M</em>) will run out of stock in 5.2 days at current sales velocity, putting <strong>$34,000 in projected revenue at risk</strong>.
+                  </p>
+                </div>
+
+                <!-- Interactive Causal Tree & Prescriptions Grid -->
+                <div class="dash-grid-2col">
+                  
+                  <!-- Left: Interactive Causal Drivers -->
+                  <div class="dash-card">
+                    <div class="dash-card-header">
+                      <h3 class="dash-card-title">[ CAUSAL DRIVER MATRIX ]</h3>
+                      <span class="dash-card-sub">Click node to inspect signal</span>
+                    </div>
+
+                    <div class="causal-nodes-list">
+                      <div class="causal-node-item active" data-cause="meta">
+                        <div class="node-icon bg-blue">1</div>
+                        <div class="node-content">
+                          <div class="node-title">Meta Ad CAC Drop (-22%)</div>
+                          <div class="node-meta">Creative #12 ("Silk Texture Focus") generated 64% of conversions</div>
+                        </div>
+                        <div class="node-impact positive">+$18.2k Rev</div>
+                      </div>
+
+                      <div class="causal-node-item" data-cause="checkout">
+                        <div class="node-icon bg-green">2</div>
+                        <div class="node-content">
+                          <div class="node-title">Mobile Page Load Speed (+400ms faster)</div>
+                          <div class="node-meta">Shopify image compression update reduced cart abandonment by 4.2%</div>
+                        </div>
+                        <div class="node-impact positive">+$7.4k Rev</div>
+                      </div>
+
+                      <div class="causal-node-item" data-cause="stockout">
+                        <div class="node-icon bg-red">3</div>
+                        <div class="node-content">
+                          <div class="node-title">Inventory Constraint Warning</div>
+                          <div class="node-meta">Silk Blazer SKU #881 stock level: 42 units left (Run rate: 8.1 units/day)</div>
+                        </div>
+                        <div class="node-impact negative">-$34.0k Risk</div>
+                      </div>
+                    </div>
+
+                    <div class="causal-detail-drawer" id="causalDrawer">
+                      <div class="drawer-header">
+                        <span class="drawer-title" id="drawerTitle">Signal Detail: Meta Ad CAC Drop</span>
+                        <span class="drawer-confidence">CONFIDENCE: 98.4%</span>
+                      </div>
+                      <p class="drawer-body" id="drawerBody">
+                        Algorithmic audit indicates Meta's Andromeda targeting model shifted budget towards high-LTV female demographic (Ages 28-44) with an average order value of $210 vs store average of $165.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Right: Prescriptive Action Cards -->
+                  <div class="dash-card">
+                    <div class="dash-card-header">
+                      <h3 class="dash-card-title">[ RECOMMENDED OPERATIONAL ACTIONS ]</h3>
+                      <span class="dash-card-sub">Execute with 1-click</span>
+                    </div>
+
+                    <div class="prescriptions-list">
+                      <div class="prescription-card">
+                        <div class="prescription-top">
+                          <span class="urgency-tag high">URGENT ACTION</span>
+                          <span class="roi-tag">Prevent -$34k Loss</span>
+                        </div>
+                        <h4 class="prescription-title">Trigger Emergency Inventory Purchase Order</h4>
+                        <p class="prescription-desc">Submit expedited PO for 250 units of Silk Blazer SKU #881 to Italian supplier. Air freight shipping recommended.</p>
+                        <div class="prescription-footer">
+                          <button class="btn btn-primary btn-sm action-btn" data-action="po">Execute PO via Shopify</button>
+                          <span class="action-status" id="poStatus">Ready to send</span>
+                        </div>
+                      </div>
+
+                      <div class="prescription-card">
+                        <div class="prescription-top">
+                          <span class="urgency-tag medium">OPTIMIZATION</span>
+                          <span class="roi-tag">+$12.5k Est. Revenue</span>
+                        </div>
+                        <h4 class="prescription-title">Scale Meta Campaign "Q3 Outerwear" Budget</h4>
+                        <p class="prescription-desc">Increase daily spend limit by +$750/day while CPA remains below $45 threshold.</p>
+                        <div class="prescription-footer">
+                          <button class="btn btn-secondary btn-sm action-btn" data-action="budget">Update Meta Budget</button>
+                          <span class="action-status" id="budgetStatus">Pending approval</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Interactive AI Prompt Query Console -->
+                <div class="dash-copilot-console">
+                  <div class="console-input-bar">
+                    <span class="console-prompt-symbol">▶</span>
+                    <input type="text" id="copilotInput" placeholder="Ask Revixa anything (e.g. 'Why did net margin drop yesterday?' or 'Which ad creative had highest LTV?')..." value="Why did net margin drop on Tuesday despite high revenue?">
+                    <button class="btn btn-primary btn-sm" id="copilotSubmitBtn">Ask Copilot</button>
+                  </div>
+
+                  <div class="console-quick-prompts">
+                    <span class="quick-label">SUGGESTED QUERIES:</span>
+                    <button class="quick-prompt-chip" data-query="Explain yesterday's refund spike">"Explain yesterday's refund spike"</button>
+                    <button class="quick-prompt-chip" data-query="Forecast inventory needs for next 30 days">"Forecast 30-day inventory"</button>
+                    <button class="quick-prompt-chip" data-query="Which ad channel has lowest ROAS?">"Which ad channel has lowest ROAS?"</button>
+                  </div>
+
+                  <!-- Simulated Response Box -->
+                  <div class="console-response-box" id="consoleResponseBox">
+                    <div class="response-header">
+                      <span class="badge-blue">REVIXA SYNTHESIS ENGINE</span>
+                      <span class="response-time">Processed in 180ms</span>
+                    </div>
+                    <div class="response-text" id="consoleResponseText">
+                      Net margin decreased by 3.2% on Tuesday because spend on Google Search Ads increased by +$4,200 without proportional conversion gain (CPA rose from $38 to $84 due to competitor bid inflation on keyword "luxury blazer").
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: EDITORIAL ARCHITECTURE & PHILOSOPHY -->
+    <section class="section-padding section-border-top" id="intelligence">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 02 / DESIGN PHILOSOPHY ]</div>
+          <h2 class="section-headline">Engineered for clarity.<br>Built for decisions.</h2>
+          <p class="section-sub-lead">
+            Traditional tools force human founders to act as data analysts. Revixa introduces a new category: software that understands serious businesses and explains cause and effect.
+          </p>
+        </div>
+
+        <!-- Asymmetrical Philosophy Grid (Stripe + Linear Studio Style) -->
+        <div class="philosophy-grid">
+          
+          <div class="phil-card span-2">
+            <div class="phil-num">01</div>
+            <h3 class="phil-title">Whitespace is an Operational Feature</h3>
+            <p class="phil-desc">
+              Visual noise induces decision fatigue. By utilizing precise grid mechanics and editorial spacing, Revixa guides your eye directly to what changed and why.
+            </p>
+            <div class="phil-visual-mini whitespace-demo">
+              <div class="demo-clean-line"></div>
+              <div class="demo-clean-text">CLEAR SIGNAL DEFINITION</div>
+            </div>
+          </div>
+
+          <div class="phil-card">
+            <div class="phil-num">02</div>
+            <h3 class="phil-title">Typography Creates Hierarchy</h3>
+            <p class="phil-desc">
+              No decorative badges or unnecessary color fills. Structural typography establishes instant clarity between high-level executive briefs and raw signal data.
+            </p>
+            <div class="phil-visual-mini typo-demo">
+              <span class="type-sample-display">76px Display</span>
+              <span class="type-sample-mono">[ 12px Mono Data ]</span>
+            </div>
+          </div>
+
+          <div class="phil-card">
+            <div class="phil-num">03</div>
+            <h3 class="phil-title">The Product is the Hero</h3>
+            <p class="phil-desc">
+              No generic stock photos, floating 3D glass, or abstract vector art. The software interface itself communicates its precision and utility.
+            </p>
+            <div class="phil-visual-mini UI-demo">
+              <div class="mini-ui-bar"></div>
+              <div class="mini-ui-dot"></div>
+            </div>
+          </div>
+
+          <div class="phil-card span-2">
+            <div class="phil-num">04</div>
+            <h3 class="phil-title">Restrained Motion with Purpose</h3>
+            <p class="phil-desc">
+              Every animation communicates state change, directional causality, or data lineage. No decorative floating objects or unnecessary hover gimmicks.
+            </p>
+            <div class="phil-visual-mini motion-demo">
+              <div class="motion-pulse-line"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: PROBE-STYLE INTERACTIVE STORYTELLING -->
+    <section class="section-padding section-border-top bg-subtle" id="storytelling">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 03 / CAUSAL ATTRIBUTION STORY ]</div>
+          <h2 class="section-headline">From fragmented signals<br>to instant understanding.</h2>
+          <p class="section-sub-lead">
+            Observe how Revixa ingests millions of data points across your stack and condenses them into three logical operational steps.
+          </p>
+        </div>
+
+        <div class="probe-story-wrapper">
+          
+          <!-- Sticky Story Controls (Left Column) -->
+          <div class="story-steps-column">
+            
+            <div class="story-step-item active" data-step="1">
+              <div class="step-badge">STEP 01</div>
+              <h3 class="step-title">Cross-Platform Signal Ingestion</h3>
+              <p class="step-desc">
+                Revixa connects natively to Shopify, Klaviyo, Meta Ads, Google Ads, and your ERP to pull real-time order, ad, and inventory telemetry every 30 seconds.
+              </p>
+            </div>
+
+            <div class="story-step-item" data-step="2">
+              <div class="step-badge">STEP 02</div>
+              <h3 class="step-title">Neural Causal Synthesis</h3>
+              <p class="step-desc">
+                Our inference engine runs regression models across cross-channel metrics to isolate genuine causality from accidental correlation.
+              </p>
+            </div>
+
+            <div class="story-step-item" data-step="3">
+              <div class="step-badge">STEP 03</div>
+              <h3 class="step-title">Prescriptive Execution Brief</h3>
+              <p class="step-desc">
+                Instead of leaving you with a list of charts, Revixa delivers plain-English executive summaries paired with 1-click execution actions.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Dynamic Display Canvas (Right Column) -->
+          <div class="story-canvas-column">
+            <div class="canvas-card" id="storyCanvasCard">
+              
+              <!-- Dynamic Content State 1 -->
+              <div class="canvas-state state-1 active">
+                <div class="canvas-state-header">
+                  <span class="mono-label">LIVE DATA STREAM</span>
+                  <span class="status-live">● SYNCED</span>
+                </div>
+                <div class="signals-flow-diagram">
+                  <div class="flow-node">
+                    <span class="node-brand">Shopify Plus</span>
+                    <span class="node-val">14,280 Orders</span>
+                  </div>
+                  <div class="flow-arrow">→</div>
+                  <div class="flow-node highlight">
+                    <span class="node-brand">Revixa Core</span>
+                    <span class="node-val">Processing...</span>
+                  </div>
+                  <div class="flow-arrow">←</div>
+                  <div class="flow-node">
+                    <span class="node-brand">Meta & Google</span>
+                    <span class="node-val">$48.5k Spend</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dynamic Content State 2 -->
+              <div class="canvas-state state-2">
+                <div class="canvas-state-header">
+                  <span class="mono-label">NEURAL CAUSAL MODEL</span>
+                  <span class="status-live text-blue">● ANALYZING ATTRIBUTION</span>
+                </div>
+                <div class="causal-graph-mock">
+                  <div class="graph-row">
+                    <span class="g-label">Meta Ad Spend Shift</span>
+                    <div class="g-bar bg-blue" style="width: 78%;"></div>
+                    <span class="g-pct">+78% Causal Impact</span>
+                  </div>
+                  <div class="graph-row">
+                    <span class="g-label">Checkout Speed Change</span>
+                    <div class="g-bar bg-green" style="width: 42%;"></div>
+                    <span class="g-pct">+42% Causal Impact</span>
+                  </div>
+                  <div class="graph-row">
+                    <span class="g-label">Email Campaign Reach</span>
+                    <div class="g-bar bg-gray" style="width: 15%;"></div>
+                    <span class="g-pct">+15% Causal Impact</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dynamic Content State 3 -->
+              <div class="canvas-state state-3">
+                <div class="canvas-state-header">
+                  <span class="mono-label">EXECUTIVE ACTION BRIEF</span>
+                  <span class="status-live text-green">● READY TO EXECUTE</span>
+                </div>
+                <div class="brief-mock-box">
+                  <div class="brief-tag font-mono">ACTIONABLE DECISION #04</div>
+                  <h4 class="brief-title">Scale "Q3 Outerwear" Meta Campaign by +$750/day</h4>
+                  <p class="brief-body">
+                    Model predicts +$14,200 net margin gain over 14 days with 94.2% probability before reaching creative fatigue limits.
+                  </p>
+                  <button class="btn btn-primary btn-sm">Approve Action in Revixa</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: THE DASHBOARD ANTI-PATTERN COMPARISON -->
+    <section class="section-padding section-border-top" id="comparison">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 04 / THE ANTI-PATTERN ]</div>
+          <h2 class="section-headline">Why traditional dashboards fail.<br>And why Revixa wins.</h2>
+          <p class="section-sub-lead">
+            Compare the chaotic noise of legacy business intelligence with the calm precision of Revixa.
+          </p>
+        </div>
+
+        <div class="comparison-toggle-bar">
+          <button class="toggle-btn active" id="btnShowRevixa">
+            <span class="toggle-icon">✦</span> Revixa Editorial OS
+          </button>
+          <button class="toggle-btn" id="btnShowLegacy">
+            <span class="toggle-icon">✕</span> Legacy Analytics Dashboard
+          </button>
+        </div>
+
+        <div class="comparison-viewport">
+          
+          <!-- View 1: Revixa (Default) -->
+          <div class="comp-card revixa-card active" id="compRevixa">
+            <div class="comp-header">
+              <div class="comp-badge">REVIXA COMMERCE INTELLIGENCE</div>
+              <span class="comp-status">CALM & STRUCTURED</span>
+            </div>
+            <div class="comp-content">
+              <div class="revixa-story-quote">
+                <span class="quote-symbol">“</span>
+                <p class="quote-text">
+                  Revenue is up +18.4% because mobile checkout speed improved by 400ms after Monday's Shopify theme update, reducing drop-off by 4.2%.
+                </p>
+              </div>
+              <div class="revixa-action-strip">
+                <span class="strip-label">DIRECT ACTION:</span>
+                <span class="strip-text">No operational changes needed for checkout. Focus on stocking SKU #881.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 2: Legacy Chaos -->
+          <div class="comp-card legacy-card" id="compLegacy">
+            <div class="comp-header">
+              <div class="comp-badge legacy">LEGACY BI TOOL (GA4 / LOOKER)</div>
+              <span class="comp-status legacy">CHAOTIC NOISE</span>
+            </div>
+            <div class="comp-content">
+              <div class="legacy-chaos-grid">
+                <div class="chaos-box">Chart #1: 42 conflicting lines</div>
+                <div class="chaos-box">Chart #2: Sessions by browser (irrelevant)</div>
+                <div class="chaos-box">Chart #3: Bounce rate vs exit rate puzzle</div>
+                <div class="chaos-box">Chart #4: 18 colors without explanation</div>
+              </div>
+              <div class="legacy-footer-text">
+                ❌ Result: Founder spends 3 hours building spreadsheets, still doesn't know why revenue changed.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: PRESCRIPTIVE ACTION PLAYGROUND -->
+    <section class="section-padding section-border-top bg-subtle" id="playground">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 05 / SCENARIO PLAYGROUND ]</div>
+          <h2 class="section-headline">Real e-commerce scenarios.<br>Instant, engineered solutions.</h2>
+          <p class="section-sub-lead">
+            Select a critical business event below to see how Revixa diagnoses the root cause and delivers an immediate solution.
+          </p>
+        </div>
+
+        <div class="playground-interactive-box">
+          
+          <!-- Scenario Tabs -->
+          <div class="scenario-tabs-nav">
+            <button class="scenario-tab active" data-scenario="ad-fatigue">
+              <span class="tab-num">01</span> Meta Creative Fatigue
+            </button>
+            <button class="scenario-tab" data-scenario="stockout">
+              <span class="tab-num">02</span> Hero Product Stockout
+            </button>
+            <button class="scenario-tab" data-scenario="checkout-drop">
+              <span class="tab-num">03</span> Checkout Conversion Drop
+            </button>
+            <button class="scenario-tab" data-scenario="klaviyo-decay">
+              <span class="tab-num">04</span> Email Deliverability Dip
+            </button>
+          </div>
+
+          <!-- Scenario Display Card -->
+          <div class="scenario-display-card" id="scenarioDisplayCard">
+            
+            <div class="scenario-meta-bar">
+              <span class="scen-badge" id="scenBadge">SCENARIO: META CREATIVE FATIGUE</span>
+              <span class="scen-severity" id="scenSeverity">SEVERITY: HIGH</span>
+            </div>
+
+            <div class="scenario-grid-2col">
+              
+              <div class="scen-col">
+                <h4 class="scen-col-title">[ REVIXA DIAGNOSIS ]</h4>
+                <div class="scen-diagnosis-text" id="scenDiagnosis">
+                  Frequency on Top Creative #04 reached 4.8x. Click-through rate dropped from 2.4% to 1.1% over 48 hours, causing CAC to surge from $32 to $68.
+                </div>
+                <div class="scen-metric-highlight" id="scenMetric">
+                  CAC SURGE: +112.5% | WASTED DAILY SPEND: $1,420
+                </div>
+              </div>
+
+              <div class="scen-col border-left">
+                <h4 class="scen-col-title">[ PRESCRIPTIVE RESOLUTION ]</h4>
+                <div class="scen-action-text" id="scenAction">
+                  Revixa auto-generated a budget shift recommendation: Pause Creative #04 and allocate $1,200/day to Back-up Creative #09 ("Customer Review Montage").
+                </div>
+                <div class="scen-action-footer">
+                  <button class="btn btn-primary btn-sm" id="scenSimulateBtn">Simulate Auto-Fix</button>
+                  <span class="sim-feedback" id="simFeedback">Click to test instant resolution</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 6: CAPABILITIES SPECIFICATION GRID -->
+    <section class="section-padding section-border-top" id="capabilities">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 06 / SYSTEM SPECIFICATIONS ]</div>
+          <h2 class="section-headline">Engineered for scaling commerce.</h2>
+          <p class="section-sub-lead">
+            Built from the ground up to support high-growth DTC brands, multi-store holding companies, and enterprise Shopify Plus merchants.
+          </p>
+        </div>
+
+        <div class="specifications-grid">
+          
+          <div class="spec-card">
+            <div class="spec-header">
+              <span class="spec-code">SPEC-01</span>
+              <span class="spec-icon">⚡</span>
+            </div>
+            <h3 class="spec-title">Real-Time Signal Ingestion</h3>
+            <p class="spec-desc">Sub-minute webhooks capture order flows, conversion events, and ad spend shifts continuously with 99.99% uptime reliability.</p>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <span class="spec-code">SPEC-02</span>
+              <span class="spec-icon">🛡️</span>
+            </div>
+            <h3 class="spec-title">Unit Economics Guardrails</h3>
+            <p class="spec-desc">Set strict gross margin floor parameters. Revixa flags any campaign or product mix shift that threatens underlying profitability.</p>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <span class="spec-code">SPEC-03</span>
+              <span class="spec-icon">📦</span>
+            </div>
+            <h3 class="spec-title">Inventory Run-Rate Forecasting</h3>
+            <p class="spec-desc">Predict exact stockout dates based on dynamic demand velocity, lead times, and seasonal ad scaling plans.</p>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <span class="spec-code">SPEC-04</span>
+              <span class="spec-icon">🎯</span>
+            </div>
+            <h3 class="spec-title">Blended CAC & LTV Optimization</h3>
+            <p class="spec-desc">Eliminate channel attribution silos. View true blended customer acquisition costs mapped against 60-day LTV curves.</p>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <span class="spec-code">SPEC-05</span>
+              <span class="spec-icon">📜</span>
+            </div>
+            <h3 class="spec-title">Automated Executive Briefing</h3>
+            <p class="spec-desc">Receive concise Slack, email, or PDF briefs designed specifically for founders, executives, and board directors every morning.</p>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-header">
+              <span class="spec-code">SPEC-06</span>
+              <span class="spec-icon">🏛️</span>
+            </div>
+            <h3 class="spec-title">Multi-Store Aggregation</h3>
+            <p class="spec-desc">Consolidate multiple Shopify stores, international currencies, and subsidiary brands into a unified operational command center.</p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 7: INTERACTIVE ROI CALCULATOR -->
+    <section class="section-padding section-border-top bg-subtle" id="calculator">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 07 / VALUE IMPACT ENGINE ]</div>
+          <h2 class="section-headline">Quantify your time and revenue recovered.</h2>
+          <p class="section-sub-lead">
+            Adjust your store's parameters to calculate estimated hours saved and revenue protected by Revixa.
+          </p>
+        </div>
+
+        <div class="calculator-box">
+          <div class="calc-inputs-col">
+            
+            <div class="calc-input-group">
+              <div class="calc-label-row">
+                <label for="monthlyRevSlider" class="calc-label">MONTHLY REVENUE ($)</label>
+                <span class="calc-value-display" id="revDisplay">$250,000</span>
+              </div>
+              <input type="range" id="monthlyRevSlider" min="50000" max="2000000" step="25000" value="250000" class="styled-range">
+            </div>
+
+            <div class="calc-input-group">
+              <div class="calc-label-row">
+                <label for="monthlyAdSpendSlider" class="calc-label">MONTHLY AD SPEND ($)</label>
+                <span class="calc-value-display" id="adSpendDisplay">$60,000</span>
+              </div>
+              <input type="range" id="monthlyAdSpendSlider" min="10000" max="500000" step="5000" value="60000" class="styled-range">
+            </div>
+
+            <div class="calc-input-group">
+              <div class="calc-label-row">
+                <label for="teamSizeSlider" class="calc-label">ANALYTICS OPERATORS / FOUNDERS</label>
+                <span class="calc-value-display" id="teamDisplay">3 Team Members</span>
+              </div>
+              <input type="range" id="teamSizeSlider" min="1" max="15" step="1" value="3" class="styled-range">
+            </div>
+
+          </div>
+
+          <div class="calc-results-col">
+            <div class="calc-results-card">
+              <div class="calc-res-header">ESTIMATED REVIXA IMPACT (ANNUAL)</div>
+              
+              <div class="calc-stat-row">
+                <div class="calc-stat-block">
+                  <span class="stat-number text-blue" id="resHours">312 Hours</span>
+                  <span class="stat-label">Operator Time Recovered / Year</span>
+                </div>
+                <div class="calc-stat-block">
+                  <span class="stat-number text-green" id="resRevProtected">$42,500</span>
+                  <span class="stat-label">Revenue Protected from Stockouts</span>
+                </div>
+              </div>
+
+              <div class="calc-stat-block full">
+                <span class="stat-number" id="resAdEfficiency">+$18,000</span>
+                <span class="stat-label">Ad Budget Waste Eliminated</span>
+              </div>
+
+              <a href="#demo" class="btn btn-primary btn-block">Claim Your Revixa OS Instance</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 8: PROOF & TESTIMONIALS -->
+    <section class="section-padding section-border-top" id="proof">
+      <div class="container">
+        
+        <div class="section-editorial-header">
+          <div class="section-mono-tag">[ 08 / MERCHANT TESTIMONIALS ]</div>
+          <h2 class="section-headline">Trusted by serious e-commerce leaders.</h2>
+        </div>
+
+        <div class="testimonials-grid">
+          
+          <div class="testimonial-card">
+            <p class="quote-body">
+              “Revixa completely replaced our 5-tab morning ritual of checking Shopify, GA4, Meta, and Klaviyo. Now I spend 3 minutes reading the brief and I know exactly what actions my team needs to execute.”
+            </p>
+            <div class="author-block">
+              <div class="author-name">Marcus Vance</div>
+              <div class="author-role">Founder, L'Élégance Paris ($14M ARR)</div>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <p class="quote-body">
+              “When our CAC surged by 40% last month, Revixa isolated the exact issue within minutes: a broken landing page script from a third-party app. Saved us easily $25k in burned ad spend.”
+            </p>
+            <div class="author-block">
+              <div class="author-name">Elena Rostova</div>
+              <div class="author-role">VP of Growth, Aura Apparel ($28M ARR)</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 9: FINAL CALL TO ACTION -->
+    <section class="section-padding section-border-top bg-dark-editorial" id="demo">
+      <div class="container">
+        <div class="cta-inner-box">
+          <div class="cta-mono-tag">[ 09 / ACCESS REVIXA OS ]</div>
+          <h2 class="cta-headline">Start your morning inside Revixa.</h2>
+          <p class="cta-sub">
+            Join scaling Shopify Plus merchants and DTC leaders who have eliminated confusing dashboards in favor of clear explanations.
+          </p>
+
+          <form class="cta-form" id="waitlistForm" onsubmit="event.preventDefault(); return false;">
+            <div class="form-group">
+              <input type="email" id="userEmail" placeholder="Enter your business email address..." required>
+              <button type="submit" class="btn btn-primary btn-lg" id="submitWaitlistBtn">Request OS Access</button>
+            </div>
+            <div class="form-meta">
+              <span>✓ Instant Shopify Plus Integration</span>
+              <span>✓ 14-Day Executive Trial</span>
+              <span>✓ No Credit Card Required</span>
+            </div>
+          </form>
+
+          <div class="form-success-message" id="formSuccessMsg">
+            <span class="success-icon">✓</span>
+            <div class="success-text">
+              <strong>Access Request Received.</strong> Our executive onboarding team will issue your store's Revixa OS credentials within 2 hours.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- EDITORIAL FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <a href="#" class="brand-logo footer-logo">
+            <span class="logo-mark">R</span>
+            <span class="logo-text">REVIXA</span>
+          </a>
+          <p class="footer-tagline">
+            The Operating System for Commerce Intelligence.<br>
+            Engineered, not decorated.
+          </p>
+          <div class="system-status-indicator">
+            <span class="status-dot"></span> ALL SYSTEMS OPERATIONAL • 99.99% UPTIME
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-heading">INTELLIGENCE OS</div>
+          <a href="#intelligence">Explanation Engine</a>
+          <a href="#storytelling">Causal Attribution</a>
+          <a href="#playground">Prescriptive Execution</a>
+          <a href="#capabilities">Predictive Horizon</a>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-heading">PHILOSOPHY & PRD</div>
+          <a href="#" id="viewPrdModalLink">Internal PRD Brief</a>
+          <a href="#comparison">Anti-Pattern Standard</a>
+          <a href="#calculator">ROI Calculator</a>
+          <a href="#capabilities">Engineering Specs</a>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-heading">LEGAL & TRUST</div>
+          <a href="#">Privacy Architecture</a>
+          <a href="#">SOC2 Type II Compliance</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Security Infrastructure</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div class="copyright-text">
+          © 2026 Revixa Intelligence Inc. All rights reserved. Swiss Editorial B2B SaaS Standard.
+        </div>
+        <div class="footer-meta-notes">
+          LATENCY: 18ms | REGION: US-EAST-1 | ENCRYPTION: AES-256
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- COMMAND PALETTE MODAL (⌘K) -->
+  <div class="modal-overlay" id="cmdModal" aria-hidden="true">
+    <div class="cmd-modal-box">
+      <div class="cmd-input-header">
+        <span class="cmd-icon">🔍</span>
+        <input type="text" id="cmdInput" placeholder="Type a command or search Revixa OS..." focus>
+        <span class="kbd-badge">ESC</span>
+      </div>
+      <div class="cmd-results-list" id="cmdResults">
+        <div class="cmd-item selected" data-action="brief">
+          <span class="cmd-item-icon">📊</span>
+          <span class="cmd-item-text">View Morning Executive Brief</span>
+          <span class="cmd-item-shortcut">↵</span>
+        </div>
+        <div class="cmd-item" data-action="cause">
+          <span class="cmd-item-icon">🌿</span>
+          <span class="cmd-item-text">Inspect Meta Ad CAC Root Cause</span>
+          <span class="cmd-item-shortcut">⌘1</span>
+        </div>
+        <div class="cmd-item" data-action="po">
+          <span class="cmd-item-icon">📦</span>
+          <span class="cmd-item-text">Trigger Emergency PO for Silk Blazer SKU #881</span>
+          <span class="cmd-item-shortcut">⌘2</span>
+        </div>
+        <div class="cmd-item" data-action="calc">
+          <span class="cmd-item-icon">🧮</span>
+          <span class="cmd-item-text">Jump to Store ROI Calculator</span>
+          <span class="cmd-item-shortcut">⌘3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

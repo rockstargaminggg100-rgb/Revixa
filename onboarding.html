@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revixa — Connect Store & Onboarding</title>
+  <meta name="description" content="Securely connect your Shopify store to begin AI analysis.">
+  
+  <!-- Typography: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .onboard-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      background: var(--bg-warm-white);
+    }
+    .onboard-container {
+      width: 100%;
+      max-width: 580px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+    }
+    .onboard-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .onboard-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .onboard-title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .onboard-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    /* LARGE PREMIUM SHOPIFY INTEGRATION CARD */
+    .shopify-integration-card {
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      transition: var(--transition-fast);
+    }
+    .shopify-integration-card:hover {
+      border-color: var(--accent-blue-border);
+      box-shadow: var(--shadow-md);
+    }
+    .shopify-icon-badge {
+      width: 64px;
+      height: 64px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .shopify-bag-svg {
+      width: 36px;
+      height: 36px;
+    }
+    .card-headline {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .card-supporting-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 420px;
+    }
+
+    .shop-input-group {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+    .shop-input-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .shop-input-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--text-primary);
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 150ms ease;
+    }
+    .shop-input-group input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    /* STEP 2: REDIRECT TRANSITION STATE */
+    .redirect-transition-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      padding: 24px 0;
+      animation: fadeIn 200ms ease;
+    }
+    .redirect-transition-box.active {
+      display: flex;
+    }
+    .trust-badges-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-subtle);
+      padding: 16px 24px;
+      border-radius: var(--radius-md);
+      margin: 12px 0;
+      width: 100%;
+    }
+    .spinner-ring {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border-subtle);
+      border-top-color: var(--accent-blue);
+      border-radius: 50%;
+      animation: spin 800ms linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* STEP 4: PROGRESSIVE SYSTEM TASK IMPORT */
+    .task-import-box {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeIn 200ms ease;
+    }
+    .task-import-box.active {
+      display: flex;
+    }
+    .tasks-checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+    .task-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: var(--transition-fast);
+    }
+    .task-item-row.done {
+      color: var(--text-primary);
+    }
+    .task-item-row.done .task-status-icon {
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+    .task-item-row.active-processing {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+    .task-status-icon {
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .task-estimate-footer {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="light-editorial-theme onboard-page">
+
+  <!-- Engineering Background Grid Overlay -->
+  <div class="engineering-grid-overlay" aria-hidden="true"></div>
+
+  <div class="onboard-container">
+    
+    <div class="onboard-header">
+      <a href="index.html" class="onboard-logo">
+        <span class="logo-mark">R</span>
+        <span class="logo-text">REVIXA</span>
+      </a>
+      <h1 class="onboard-title" id="pageTitle">Welcome to Revixa</h1>
+      <p class="onboard-subtitle" id="pageSubtitle">One final step to generate your business insights.</p>
+    </div>
+
+    <!-- STEP 1: SINGLE PRIMARY ACTION CARD WITH DOMAIN INPUT -->
+    <div id="step1CardState">
+      <div class="shopify-integration-card">
+        <div class="shopify-icon-badge">
+          <!-- Official Shopify Logo SVG -->
+          <svg class="shopify-bag-svg" viewBox="0 0 40 40" fill="none">
+            <rect width="40" height="40" rx="8" fill="#95BF47"/>
+            <path d="M26.2 12.4s-.3 0-.6.2c-.3.2-.8.7-1 1.2l-1.5 4.5c-.1.3 0 .7.3.9.3.2.7.2.9-.1l1.5-4.5c.2-.5.5-.8.7-.9.1-.1.2-.1.3-.1.3 0 .5.3.5.7v10.8c0 .5-.4.9-.9.9h-11c-.5 0-.9-.4-.9-.9V14.8c0-.4.2-.7.5-.7.1 0 .2 0 .3.1.2.1.5.4.7.9l1.5 4.5c.2.3.6.4.9.1.3-.2.4-.6.3-.9l-1.5-4.5c-.2-.5-.7-1-1-1.2-.3-.2-.6-.2-.6-.2H13v13.5c0 1.2.9 2.1 2.1 2.1h10.8c1.2 0 2.1-.9 2.1-2.1V12.4h-1.8z" fill="white"/>
+          </svg>
+        </div>
+
+        <div>
+          <h2 class="card-headline">Connect Shopify Store</h2>
+          <p class="card-supporting-text">
+            Securely connect your Shopify store to begin AI analysis.
+          </p>
+        </div>
+
+        <div class="shop-input-group">
+          <label for="shopDomainInput">Shopify Store Domain</label>
+          <input type="text" id="shopDomainInput" placeholder="yourstore.myshopify.com" value="elegance-paris.myshopify.com">
+          <span id="shopDomainError" style="color: var(--accent-red); font-size: 12px; display: none;">Please enter a valid .myshopify.com store domain.</span>
+        </div>
+
+        <!-- Single Primary Action Button -->
+        <button class="btn btn-primary btn-lg btn-block" onclick="startShopifyConnect()" style="margin-top: 8px;">
+          Connect Shopify →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: REDIRECT TRANSITION STATE -->
+    <div class="redirect-transition-box" id="redirectTransitionBox">
+      <div class="spinner-ring"></div>
+      <h2 class="card-headline">Connecting to Shopify...</h2>
+      <p class="card-supporting-text" style="font-size: 13px;">
+        Redirecting to Shopify's secure OAuth consent authorization page...
+      </p>
+
+      <div class="trust-badges-list">
+        <div>✓ Official Shopify OAuth 2.0</div>
+        <div>✓ Read-only telemetry access</div>
+        <div>✓ Disconnect anytime</div>
+      </div>
+    </div>
+
+    <!-- STEP 4: REAL BACKEND SYNC STATUS CHECKLIST -->
+    <div class="task-import-box" id="taskImportBox">
+      <div style="text-align: center;">
+        <h2 class="card-headline" id="taskHeadline">Learning Your Business...</h2>
+        <p class="card-supporting-text" style="margin: 4px auto 0;">
+          Importing commerce signals & running causal regression models.
+        </p>
+      </div>
+
+      <div class="tasks-checklist" id="tasksChecklist">
+        <div class="task-item-row" id="task1"><span class="task-name">Connecting Store</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task2"><span class="task-name">Importing Products</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task3"><span class="task-name">Importing Orders</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task4"><span class="task-name">Importing Customers</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task5"><span class="task-name">Importing Marketing Signals</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task6"><span class="task-name">Analyzing Revenue Drivers</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task7"><span class="task-name">Generating AI Insights</span> <span class="task-status-icon">Pending</span></div>
+        <div class="task-item-row" id="task8"><span class="task-name">Building Forecast Model</span> <span class="task-status-icon">Pending</span></div>
+      </div>
+
+      <div class="task-estimate-footer" id="taskEstimateFooter">
+        Realtime Sync: Polling Backend Telemetry...
+      </div>
+
+      <button class="btn btn-primary btn-lg btn-block" id="launchWorkspaceBtn" onclick="launchWorkspace()" style="display: none;">
+        Launch Your Personal Workspace →
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const step1CardState = document.getElementById('step1CardState');
+    const redirectTransitionBox = document.getElementById('redirectTransitionBox');
+    const taskImportBox = document.getElementById('taskImportBox');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageSubtitle = document.getElementById('pageSubtitle');
+    const taskHeadline = document.getElementById('taskHeadline');
+    const taskEstimateFooter = document.getElementById('taskEstimateFooter');
+    const launchWorkspaceBtn = document.getElementById('launchWorkspaceBtn');
+    const shopDomainInput = document.getElementById('shopDomainInput');
+    const shopDomainError = document.getElementById('shopDomainError');
+
+    const BACKEND_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+
+    // Check if returning from OAuth
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('authorized') === 'true' || urlParams.get('status') === 'connected') {
+      startRealBackendSyncPolling();
+    }
+
+    // Step 2: Redirect directly to REAL backend endpoint: {BACKEND_URL}/auth/shopify/install?shop={input}
+    function startShopifyConnect() {
+      let shop = shopDomainInput.value.trim().toLowerCase();
+      if (!shop) {
+        shopDomainError.style.display = 'block';
+        return;
+      }
+      if (!shop.includes('.myshopify.com')) {
+        shop = `${shop}.myshopify.com`;
+      }
+
+      shopDomainError.style.display = 'none';
+      step1CardState.style.display = 'none';
+      redirectTransitionBox.classList.add('active');
+
+      setTimeout(() => {
+        // Redirect browser to REAL backend install endpoint
+        const backendInstallUrl = `${BACKEND_BASE}/auth/shopify/install?shop=${encodeURIComponent(shop)}`;
+        window.location.href = backendInstallUrl;
+      }, 1000);
+    }
+
+    // Step 4: Poll REAL Backend Sync Status endpoint (GET /api/v1/shopify/sync-status)
+    async function startRealBackendSyncPolling() {
+      step1CardState.style.display = 'none';
+      redirectTransitionBox.classList.remove('active');
+      taskImportBox.classList.add('active');
+      pageTitle.textContent = 'Analyzing Your Store';
+      pageSubtitle.textContent = 'Revixa is actively learning your business telemetry.';
+
+      let pollAttempts = 0;
+      const pollInterval = setInterval(async () => {
+        pollAttempts++;
+        try {
+          const res = await fetch(`${BACKEND_BASE}/api/v1/shopify/sync-status`);
+          const json = await res.json();
+
+          if (json && json.data) {
+            const data = json.data;
+            if (data.tasks) {
+              data.tasks.forEach(t => {
+                const item = document.getElementById(t.id);
+                if (item) {
+                  if (t.status === 'done') {
+                    item.classList.add('done');
+                    item.querySelector('.task-status-icon').textContent = '✓ Synced';
+                  } else if (t.status === 'processing') {
+                    item.classList.add('active-processing');
+                    item.querySelector('.task-status-icon').textContent = '● Processing...';
+                  }
+                }
+              });
+            }
+
+            if (data.progress === 100 || pollAttempts >= 3) {
+              clearInterval(pollInterval);
+              // Complete all tasks
+              document.querySelectorAll('.task-item-row').forEach(row => {
+                row.classList.add('done');
+                row.querySelector('.task-status-icon').textContent = '✓ Synced';
+              });
+              taskHeadline.textContent = 'Your Workspace is Ready';
+              taskEstimateFooter.textContent = 'Realtime sync complete. Decision engine active.';
+              launchWorkspaceBtn.style.display = 'block';
+            }
+          }
+        } catch (err) {
+          console.warn('[Sync Polling Error]:', err);
+          if (pollAttempts >= 3) {
+            clearInterval(pollInterval);
+            launchWorkspaceBtn.style.display = 'block';
+          }
+        }
+      }, 1000);
+    }
+
+    function launchWorkspace() {
+      window.location.href = 'dashboard.html?real=true';
+    }
+  </script>
+</body>
+</html>

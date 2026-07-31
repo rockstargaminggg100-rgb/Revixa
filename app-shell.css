@@ -1,0 +1,666 @@
+/* ==========================================================================
+   REVIXA — AUTHENTICATED APPLICATION SHELL STYLES (SIMPLIFIED UX)
+   Extends Light Editorial Design System
+   Inspired by Apple, Linear, Stripe, Notion, Raycast, & Vercel
+   ========================================================================== */
+
+/* Import base variables from style.css */
+@import url('style.css');
+
+/* --------------------------------------------------------------------------
+   1. APP SHELL LAYOUT
+   -------------------------------------------------------------------------- */
+.app-body {
+  background-color: var(--bg-warm-white);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   2. APP TOP HEADER
+   -------------------------------------------------------------------------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: 60px;
+  background: rgba(250, 250, 248, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.store-selector-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+
+.store-selector-dropdown:hover {
+  border-color: var(--border-strong);
+}
+
+.demo-store-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  background: var(--accent-amber-subtle);
+  color: var(--accent-amber);
+  border: 1px solid var(--accent-amber-border);
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.store-avatar {
+  width: 20px;
+  height: 20px;
+  background: var(--accent-blue-subtle);
+  color: var(--accent-blue);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.app-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sync-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  padding: 4px 12px;
+  border-radius: 99px;
+  box-shadow: var(--shadow-sm);
+}
+
+.sync-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.state-switcher-group {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+
+.state-switcher-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 3px;
+  transition: var(--transition-fast);
+}
+
+.state-switcher-btn.active {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.header-user-badge:hover {
+  background: var(--bg-surface-hover);
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   3. APP RESPONSIVE SIDEBAR & COMPACT INTEGRATIONS
+   -------------------------------------------------------------------------- */
+.app-sidebar {
+  width: 240px;
+  background: var(--bg-warm-white);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 14px;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+}
+
+.sidebar-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  padding: 8px 10px 4px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: var(--transition-fast);
+  text-decoration: none;
+}
+
+.sidebar-link-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-icon {
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+}
+
+.sidebar-link:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.sidebar-link.active {
+  background: #FFFFFF;
+  color: var(--accent-blue);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.action-alert-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-red);
+}
+
+/* Compact Integrations Panel (Clean & Non-decorative) */
+.compact-integrations-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.integrations-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.integrations-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.integrations-sync {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   4. MAIN VIEWPORT & PAGE ROUTER
+   -------------------------------------------------------------------------- */
+.app-viewport {
+  flex: 1;
+  padding: 32px 40px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-view {
+  display: none;
+  flex-direction: column;
+  gap: 28px;
+  animation: fadeIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-view.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header-title-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 16px;
+}
+
+.page-headline {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.page-subhead {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.page-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   5. 4 KPI CARDS STRIP ABOVE THE FOLD (CALM & FOCUSED)
+   -------------------------------------------------------------------------- */
+.metrics-strip-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   6. SIGNATURE AI INSIGHT HERO PANEL (THE PRIMARY FOCUS)
+   -------------------------------------------------------------------------- */
+.signature-ai-hero-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.ai-hero-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--accent-blue-subtle);
+  border-bottom: 1px solid var(--accent-blue-border);
+}
+
+.ai-hero-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-blue);
+  letter-spacing: 0.04em;
+}
+
+.ai-confidence-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--accent-blue-border);
+  border-radius: 99px;
+  color: var(--accent-blue);
+}
+
+.ai-hero-body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.narrative-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.narrative-pipeline::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 17px;
+  width: 2px;
+  background: var(--border-subtle);
+  z-index: 1;
+}
+
+.pipeline-step {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.step-node-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.pipeline-step.active .step-node-icon {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: var(--accent-blue-subtle);
+}
+
+.step-node-content {
+  flex: 1;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+}
+
+.step-node-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.step-node-headline {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.step-node-detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.step-evidence-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.evidence-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+.impact-highlight-box {
+  background: var(--accent-green-subtle);
+  border: 1px solid var(--accent-green-border);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-green);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------------------------
+   7. TODAY'S PRIORITIES QUEUE (NEW CORE SECTION)
+   -------------------------------------------------------------------------- */
+.priorities-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.priority-queue-item {
+  display: grid;
+  grid-template-columns: 160px 1fr 140px 130px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: var(--transition-fast);
+}
+
+.priority-queue-item:hover {
+  background: #FFFFFF;
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.priority-badge-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.priority-level {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.priority-badge-box.high .priority-level { color: var(--accent-red); }
+.priority-badge-box.medium .priority-level { color: var(--accent-blue); }
+
+.priority-type {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.priority-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.priority-item-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.priority-financial-box {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.fin-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.fin-value {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.priority-financial-box.negative .fin-value { color: var(--accent-red); }
+.priority-financial-box.positive .fin-value { color: var(--accent-green); }
+
+.priority-action-box {
+  text-align: right;
+}
+
+/* --------------------------------------------------------------------------
+   8. NARRATIVE FORECAST & CUSTOMER NARRATIVE HERO
+   -------------------------------------------------------------------------- */
+.narrative-forecast-box {
+  padding: 16px 20px;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.narrative-forecast-hero {
+  background: #FFFFFF;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.forecast-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 32px;
+}
+
+.forecast-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.forecast-stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.f-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.f-val {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE MEDIA QUERIES
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .app-container { flex-direction: column; }
+  .app-sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+  .sidebar-nav-group { flex-direction: row; flex-wrap: wrap; }
+  .metrics-strip-4col { grid-template-columns: repeat(2, 1fr); }
+  .priority-queue-item { grid-template-columns: 1fr; gap: 8px; }
+  .priority-financial-box, .priority-action-box { text-align: left; }
+  .forecast-grid-2col { grid-template-columns: 1fr; }
+  .app-viewport { padding: 20px 16px 40px; }
+}
+
+@media (max-width: 600px) {
+  .metrics-strip-4col { grid-template-columns: 1fr; }
+  .sync-text { display: none; }
+}
